@@ -20,7 +20,7 @@ public:
     ~hole();
     
     void draw();
-    void addToPath();
+    void addToPath(ofPath *_path);
     void update(float _os, float _r, float _t);
 private:
     vector <draggableVertex *> mVerts;

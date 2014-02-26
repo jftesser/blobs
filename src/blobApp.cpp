@@ -56,6 +56,10 @@ void blobApp::setup(){
     mResolutionGUI->setDrawBack(false);
     mResSlider = new ofxUIIntSlider("resolution", 2, 11, 7, 200, stdsz/4.0, stdsz,ofGetHeight()-stdsz*2);
     mResolutionGUI->addWidget(mResSlider);
+    mShowZipperToggle = new ofxUIToggle("show cut edge",false, stdsz,stdsz,stdsz,ofGetHeight()-stdsz*3.5);
+    mResolutionGUI->addWidget(mShowZipperToggle);
+    mExportCutFileButton = new ofxUIButton("export cut file",false,stdsz,stdsz,stdsz,ofGetHeight()-stdsz*5);
+    mResolutionGUI->addWidget(mExportCutFileButton);
     mResolutionGUI->autoSizeToFitWidgets();
     ofAddListener(mResolutionGUI->newGUIEvent, this, &blobApp::guiEvent);
     
@@ -77,7 +81,7 @@ void blobApp::setup(){
     mHolePosSlider = new ofxUISlider("hole position", 0.001, 0.999, 0.501,200,stdsz/4.0,hx-200+stdsz,at);
     mHoleGUI->addWidget(mHolePosSlider);
     at += stdsz*2;
-    mHoleSizeSlider = new ofxUISlider("hole size", 5, 100, 35,200,stdsz/4.0,hx-200+stdsz,at);
+    mHoleSizeSlider = new ofxUISlider("hole size", 5, 100, 45, 200,stdsz/4.0,hx-200+stdsz,at);
     mHoleGUI->addWidget(mHoleSizeSlider);
     at += stdsz*2;
     mHoleOSSlider = new ofxUISlider("hole offset", 5, 100, 10,200,stdsz/4.0,hx-200+stdsz,at);
@@ -87,7 +91,7 @@ void blobApp::setup(){
     ofAddListener(mHoleGUI->newGUIEvent, this, &blobApp::guiEvent);
     
     hx = ofGetWidth()*0.5+stdsz*2;
-    at = ofGetHeight()-stdsz*6.5;
+    at = ofGetHeight()-stdsz*8.5;
     m3DGUI = new ofxUICanvas();
     m3DGUI->setFont("GUI/Gotham-Bold.ttf");
     m3DGUI->setUIColors(grey, trans, trans, pinktrans, pink, pink, pink);
@@ -100,6 +104,9 @@ void blobApp::setup(){
     at += stdsz*2;
     mSimulateToggle = new ofxUIToggle("simulate", false, stdsz,stdsz,hx,at);
     m3DGUI->addWidget(mSimulateToggle);
+    at += stdsz*2;
+    mExportSTLButton = new ofxUIButton("export stl", false, stdsz,stdsz,hx,at);
+    m3DGUI->addWidget(mExportSTLButton);
     
     m3DGUI->autoSizeToFitWidgets();
     ofAddListener(m3DGUI->newGUIEvent, this, &blobApp::guiEvent);
@@ -120,6 +127,13 @@ void blobApp::update(){
     
     mForm->updateWorld();
     
+    m3DFbo.begin();
+    ofEnableSmoothing();
+    ofSetCircleResolution(60);
+    ofClear(255,255,255);
+    mForm->draw();
+    m3DFbo.end();
+    
     m2DFbo.begin();
     ofEnableSmoothing();
     ofSetCircleResolution(60);
@@ -131,18 +145,7 @@ void blobApp::update(){
     ofPopMatrix();
     m2DFbo.end();
     
-    m3DFbo.begin();
-    ofEnableSmoothing();
-    ofSetCircleResolution(60);
-    ofClear(255,255,255);
-    /*ofBackgroundGradient(ofColor(225),ofColor(220),OF_GRADIENT_LINEAR);
-    ofPushMatrix();
-    ofTranslate(mFlatOs.x, mFlatOs.y,0); //temp
-    mForm->draw();
-    ofPopMatrix();
-    */
-    mForm->draw();
-    m3DFbo.end();
+    
 }
 
 //--------------------------------------------------------------
@@ -260,5 +263,8 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
     }
     else if (_e.getName() == mUpdateButton->getName()) {
         mForm->update(mMasterCurve->getMesh());
+    }
+    else if (_e.getName() == mShowZipperToggle->getName()) {
+        mMasterCurve->showZipper(mShowZipperToggle->getValue());
     }
 }

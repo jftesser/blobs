@@ -61,16 +61,24 @@ public:
     bool isSlave() {return mIsSlave;};
     ofVboMesh getMesh();
     
+    // setters
+    void setMaster(edgeCurve *_mc) {mMasterCurve = _mc;};
+    void showZipper(bool _show) {mDrawZipper = _show;};
+    
 private:
     vector <ofVec3f> calcSlaveVerts();
     void updatePath();
+    void updatePolyline();
     void recenter();
+    ofPoint checkOver(ofPoint _pt);
     
 private:
     vector <draggableVertex *> mVerts;
     ofPath *mPath;
     ofPolyline *mResampleLine;
+    ofPolyline *mPolyline;
     edgeCurve *mSlavedCurve;
+    edgeCurve *mMasterCurve;
     bool mIsSlave;
     bool mLocked;
     int mMinVertCnt;
@@ -79,7 +87,9 @@ private:
     hole *mHole;
     hole *mSlaveHole;
     ofPolyline *mZipperBase;
-    ofPolyline *mZipper;
+    vector <ofPoint> mZipperPts;
+    ofPath *mZipperPath;
+    bool mDrawZipper;
 public:
     bool mHoleSlaved;
 };

@@ -11,6 +11,7 @@
 
 edgeCurve::edgeCurve(vector <ofVec3f> _init_verts, bool _is_slave) :
 mSlavedCurve(NULL),
+mMasterCurve(NULL),
 mIsSlave(_is_slave),
 mLocked(_is_slave),
 mPath(NULL),
@@ -22,7 +23,9 @@ mSlaveHole(NULL),
 mHoleSlaved(true),
 mResampleLine(NULL),
 mZipperBase(NULL),
-mZipper(NULL)
+mDrawZipper(NULL),
+mZipperPath(NULL),
+mPolyline(NULL)
 {
     int ind = 0;
     for (auto v : _init_verts) {
@@ -32,6 +35,7 @@ mZipper(NULL)
     
     if (mIsSlave == false) {
         mSlavedCurve = new edgeCurve(calcSlaveVerts(),true);
+        mSlavedCurve->setMaster(this);
         
         mPath = new ofPath();
         updatePath();
@@ -39,6 +43,11 @@ mZipper(NULL)
         mPath->setFilled(true);
         mPath->setStrokeColor(ofColor(90));
         mPath->setStrokeWidth(3);
+        
+        mZipperPath = new ofPath();
+        mZipperPath->setFillColor(ofColor(255,0,128,100));
+        mZipperPath->setStrokeColor(ofColor(255,0,128,200));
+        mZipperPath->setStrokeWidth(0.5);
         
         recenter();
     }
@@ -52,10 +61,38 @@ edgeCurve::~edgeCurve() {
     if (mResampleLine) delete mResampleLine;
 }
 
+void edgeCurve::updatePolyline() {
+    if (mPolyline) {
+        delete mPolyline;
+        mPolyline = NULL;
+    }
+    
+    mPolyline = new ofPolyline();
+    
+    for (int ind =0; ind <mVerts.size(); ind++) {
+        int nind = ind+1;
+        if (nind < mVerts.size()) {
+            int nnind = ind-1;
+            if (nnind < 0 ) nnind = 0;
+            
+            draggableVertex *v = mVerts[ind];
+            draggableVertex *nv = mVerts[nind];
+            draggableVertex *nnv = mVerts[nnind];
+            
+            if (ind == 0) {
+                mPolyline->addVertex(v->pos.x,v->pos.y,v->pos.z);
+            }
+            
+            mPolyline->bezierTo((nnv->pos+v->pos)*0.5, v->pos, (v->pos+nv->pos)*0.5);
+        }
+    }
+}
+
 void edgeCurve::updatePath() {
     int ind =0;
     mPath->clear();
     mPath->setCurveResolution(10);
+    
     for (int ind =0; ind <mVerts.size(); ind++) {
         int nind = ind+1;
         if (nind < mVerts.size()) {
@@ -96,11 +133,11 @@ void edgeCurve::updatePath() {
     mPath->close();
     
     if (mHole) {
-        mHole->addToPath();
+        mHole->addToPath(mPath);
     }
     
     if (mSlaveHole) {
-        mSlaveHole->addToPath();
+        mSlaveHole->addToPath(mPath);
     }
     
 }
@@ -229,6 +266,7 @@ void edgeCurve::resample(int _vcnt) {
 }
 
 void edgeCurve::draw() {
+    updatePolyline();
     
     if (mIsSlave == false) {
         updatePath();
@@ -262,23 +300,17 @@ void edgeCurve::draw() {
         ofDisableBlendMode();
     }
     
-    if (mHole) {
-        mHole->draw();
-    }
     
-    if (mSlaveHole) {
-        mSlaveHole->draw();
-    }
-    
-    ofNoFill();
+    ofFill();
     ofSetColor(255);
-    if (mZipper) mZipper->draw();
+    if (mDrawZipper) {
+        ofEnableBlendMode(OF_BLENDMODE_SCREEN);
+            mZipperPath->draw();
+        ofDisableBlendMode();
+    }
 }
 void edgeCurve::calcZipper() {
-    if (mZipper) {
-        delete mZipper;
-        mZipper = NULL;
-    }
+    mZipperPts.clear();
     
     if (mZipperBase) {
         delete mZipperBase;
@@ -325,38 +357,77 @@ void edgeCurve::calcZipper() {
     pts.push_back(mVerts[mVerts.size()-1]->pos);
     ns.push_back(mZipperBase->getNormalAtIndex(mZipperBase->getIndexAtPercent(0.999)));
     
-    mZipper = new ofPolyline();
     float gperc = 0.1; // how much of a gap?
     for (int i=0; i<pts.size()/step; i ++) {
         if (i % 2 == 0) {
             for (int j=0; j<step;j++) {
-                mZipper->addVertex(pts[j+i*step]);
+                mZipperPts.push_back(pts[j+i*step]);
             }
         } else {
-            mZipper->addVertex(pts[i*step]);
-            mZipper->addVertex(pts[i*step]+ns[i*step]*os*gperc);
+            mZipperPts.push_back(pts[i*step]);
+            
+            mZipperPts.push_back(checkOver(pts[i*step]+ns[i*step]*os*gperc));
+            
             int from = max(0,(int)(i*step-step*0.5));
             int to = min((int)((pts.size()-1)),(int)(i*step+step*1.5));
             // reverse
             for (int j=i*step;j>=from;j--) {
-                mZipper->addVertex(pts[j]+ns[j]*os*gperc);
+                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc));
             }
             // top
             for (int j= from; j<=to; j++) {
-                    mZipper->addVertex(pts[j]+ns[j]*os);
+                    mZipperPts.push_back(checkOver(pts[j]+ns[j]*os));
             }
             // revese back
             for (int j=to;j>=i*step+step;j--) {
-                mZipper->addVertex(pts[j]+ns[j]*os*gperc);
+                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc));
             }
             
-            mZipper->addVertex(pts[(i+1)*step]);
+            mZipperPts.push_back(pts[(i+1)*step]);
             
         }
     }
     
-    if (mSlavedCurve) mSlavedCurve->calcZipper();
+    if (mSlavedCurve) {
+        mSlavedCurve->calcZipper();
+        
+        mZipperPath->clear();
+        mZipperPath->moveTo(mZipperPts[0]);
+        for (auto pt : mZipperPts) {
+            mZipperPath->lineTo(pt);
+        }
+        
+        for (auto pt : mSlavedCurve->mZipperPts){
+            mZipperPath->lineTo(pt);
+        }
+        
+        mZipperPath->close();
+        
+        if (mHole) {
+            mHole->addToPath(mZipperPath);
+        }
+        
+        if (mSlaveHole) {
+            mSlaveHole->addToPath(mZipperPath);
+        }
+    }
     
+}
+
+ofPoint edgeCurve::checkOver(ofPoint _pt) {
+    ofPath *path = mPath;
+    if (mIsSlave) path = mMasterCurve->mPath;
+    ofPolyline pln = path->getOutline()[0];
+    bool over = pln.inside(_pt);
+    
+    if (over) {
+        _pt = pln.getClosestPoint(_pt);
+    }
+    
+    // get distance from self line and opposite line. if closer to opposite, average distance
+    //ofPolyline
+    
+    return _pt;
 }
 
 void edgeCurve::mouseMoved(int _x, int _y ){

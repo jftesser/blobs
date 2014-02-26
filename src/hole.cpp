@@ -47,7 +47,7 @@ void hole::draw() {
     ofCircle(mEdgePt+mEdgeNormal*(mOS+mR), mR);*/
 }
 
-void hole::addToPath() {
+void hole::addToPath(ofPath *_path) {
     if (mVerts.size() == 0) {
         //mAddPath->circle(mEdgePt+mEdgeNormal*(mOS+mR), mR);
         ofPoint cen =mEdgePt+mEdgeNormal*(mOS+mR);
@@ -60,12 +60,12 @@ void hole::addToPath() {
         }
         
         for (int i=0; i<pts.size()-2;i++) {
-            if (i==0) mAddPath->moveTo((pts[i]+pts[i+1])*0.5);
-            mAddPath->bezierTo((pts[i]+pts[i+1])*0.5, pts[i+1], (pts[i+1]+pts[i+2])*0.5);
+            if (i==0) _path->moveTo((pts[i]+pts[i+1])*0.5);
+            _path->bezierTo((pts[i]+pts[i+1])*0.5, pts[i+1], (pts[i+1]+pts[i+2])*0.5);
             
         }
         
         
-        mAddPath->close();
+        _path->close();
     }
 }

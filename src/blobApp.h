@@ -32,6 +32,8 @@ private:
     ofVec2f mFlatOs;
     
     ofxUICanvas *mResolutionGUI;
+    ofxUIToggle *mShowZipperToggle;
+    ofxUIButton *mExportCutFileButton;
     ofxUIIntSlider *mResSlider;
     
     ofxUICanvas *mHoleGUI;
@@ -46,6 +48,7 @@ private:
     ofxUIToggle *mDynamicToggle;
     ofxUIButton *mUpdateButton;
     ofxUIToggle *mSimulateToggle;
+    ofxUIButton *mExportSTLButton;
     bool mDynamic;
     
     // 3d
