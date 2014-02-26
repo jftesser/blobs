@@ -1,0 +1,4 @@
+bin/blobs.app/
+bin/blobsDebug.app/
+bin/blobs*
+obj/
