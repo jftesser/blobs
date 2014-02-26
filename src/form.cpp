@@ -62,12 +62,12 @@ mMaxEdgeLen(40)
 	
 		
 	mShapeMat.setAmbientColor(ofFloatColor(0, 0, 0));
-	mShapeMat.setDiffuseColor(ofFloatColor(150, 0, 150));
-	mShapeMat.setSpecularColor(ofFloatColor(220, 0, 220));
+	mShapeMat.setDiffuseColor(ofFloatColor(205,0,90));
+	mShapeMat.setSpecularColor(ofFloatColor(255,0,128));
 	mShapeMat.setShininess(40);
 	
-	mBoundsMat.setAmbientColor(ofFloatColor(200));
-	mBoundsMat.setDiffuseColor(ofFloatColor(145));
+	mBoundsMat.setAmbientColor(ofFloatColor(145));
+	mBoundsMat.setDiffuseColor(ofFloatColor(90));
 	mBoundsMat.setSpecularColor(ofFloatColor(255, 255, 255));
 	mBoundsMat.setShininess(10);
 	
@@ -86,14 +86,11 @@ void form::draw() {
 	
 	mCamera.begin();
 	ofSetColor(255,0,128);
-    //ofRect(0, 0, 100, 100);
-    //mMesh.draw(OF_MESH_FILL);
-	//ofSetLineWidth(1.f);
-    mWorld.drawDebug();
+    //mWorld.drawDebug();
 	
 	ofEnableLighting();
 	mLight.enable();
-	mLight.setPosition(ofVec3f(30, -15+5, -5));
+	mLight.setPosition(ofVec3f(30, -15+5, -70));
 	ofSetColor(255, 255, 255);
 	
 	ofSetColor(100., 100., 100.);
@@ -116,9 +113,10 @@ void form::draw() {
         ofSetColor(0, 0, 0);
         mShapeMat.begin();
         mShape->transformGL();
+        mMesh.draw(OF_MESH_FILL);
+        mShape->restoreTramsformGL();
         
         mShape->draw();
-        mShape->restoreTramsformGL();
         
         glPopAttrib();
         mShapeMat.end();

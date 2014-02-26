@@ -313,30 +313,46 @@ void edgeCurve::calcZipper() {
     vector < ofPoint > pts;
     vector < ofVec3f > ns;
     float os = 15.0;
-    float segs = 40.0;
-    for (int i=0; i<=segs; i++) {
+    int notch_cnt = 30; // must be an even number
+    int step = 6; // must be an even number
+    float segs = step*notch_cnt;
+    for (int i=0; i<segs; i++) {
         float at = i/segs;
+        if (at > 1.0) at = 1.0;
         pts.push_back( mZipperBase->getPointAtPercent(at));
         ns.push_back(mZipperBase->getNormalAtIndex(mZipperBase->getIndexAtPercent(at)));
     }
+    pts.push_back(mVerts[mVerts.size()-1]->pos);
+    ns.push_back(mZipperBase->getNormalAtIndex(mZipperBase->getIndexAtPercent(0.999)));
     
     mZipper = new ofPolyline();
-    int step = 4;
+    float gperc = 0.1; // how much of a gap?
     for (int i=0; i<pts.size()/step; i ++) {
-        //mZipper->addVertex(pts[i]);
         if (i % 2 == 0) {
             for (int j=0; j<step;j++) {
                 mZipper->addVertex(pts[j+i*step]);
             }
         } else {
             mZipper->addVertex(pts[i*step]);
-            for (int j=0; j<=step;j++) {
-                mZipper->addVertex(pts[j+i*step]+ns[j+i*step]*os);
+            mZipper->addVertex(pts[i*step]+ns[i*step]*os*gperc);
+            int from = max(0,(int)(i*step-step*0.5));
+            int to = min((int)((pts.size()-1)),(int)(i*step+step*1.5));
+            // reverse
+            for (int j=i*step;j>=from;j--) {
+                mZipper->addVertex(pts[j]+ns[j]*os*gperc);
             }
+            // top
+            for (int j= from; j<=to; j++) {
+                    mZipper->addVertex(pts[j]+ns[j]*os);
+            }
+            // revese back
+            for (int j=to;j>=i*step+step;j--) {
+                mZipper->addVertex(pts[j]+ns[j]*os*gperc);
+            }
+            
             mZipper->addVertex(pts[(i+1)*step]);
             
         }
-        //mZipper->addVertex(pts[i+step-1]);
     }
     
     if (mSlavedCurve) mSlavedCurve->calcZipper();

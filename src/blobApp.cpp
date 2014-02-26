@@ -134,6 +134,7 @@ void blobApp::update(){
     m3DFbo.begin();
     ofEnableSmoothing();
     ofSetCircleResolution(60);
+    ofClear(255,255,255);
     /*ofBackgroundGradient(ofColor(225),ofColor(220),OF_GRADIENT_LINEAR);
     ofPushMatrix();
     ofTranslate(mFlatOs.x, mFlatOs.y,0); //temp
