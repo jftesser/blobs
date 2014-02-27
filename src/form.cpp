@@ -11,27 +11,20 @@
 form::form() :
 mMaxEdgeLen(40)
 {
-    mShape = NULL;
     
     mCamera.setPosition(ofVec3f(0, 15.f, -ofGetHeight()*1.25));
 	mCamera.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, -1, 0));
     
-	mWorld.setup();
-	mWorld.enableGrabbing(0); // this refers to some kind of enum
-	mWorld.setCamera(&mCamera);
-	mWorld.setGravity( ofVec3f(0, 25., 0) );
-	
 	ofVec3f startLoc;
 	ofPoint dimens;
 	mBoundsSz = ofGetHeight();
 	float hwidth = mBoundsSz*.5;
 	float depth = 2.;
 	float hdepth = depth*.5;
-	mBoundsShape = new ofxBulletCustomShape();
-	mBoundsShape->create(mWorld.world, ofVec3f(0, 0, 0), 10.);
 	
 	for(int i = 0; i < 6; i++) {
-		mBounds.push_back( new ofxBulletBox() );
+        ofBoxPrimitive *bp = new ofBoxPrimitive();
+		mBounds.push_back( bp );
 		if(i == 0) { // ground //
 			startLoc.set( 0., hwidth+hdepth, 0. );
 			dimens.set(mBoundsSz, depth, mBoundsSz);
@@ -51,25 +44,9 @@ mMaxEdgeLen(40)
 			startLoc.set(0, 0, -hwidth-hdepth);
 			dimens.set(mBoundsSz, mBoundsSz, depth);
 		}
-		btBoxShape* boxShape = ofBtGetBoxCollisionShape( dimens.x, dimens.y, dimens.z );
-		mBoundsShape->addShape( boxShape, startLoc );
-		
-		mBounds[i]->create( mWorld.world, startLoc, 0., dimens.x, dimens.y, dimens.z );
-		mBounds[i]->setProperties(.25, .95);
-		mBounds[i]->add();
+        bp->set(dimens.x, dimens.y, dimens.z);
+        bp->setPosition(startLoc);
 	}
-	
-	
-		
-	mShapeMat.setAmbientColor(ofFloatColor(0, 0, 0));
-	mShapeMat.setDiffuseColor(ofFloatColor(205,0,90));
-	mShapeMat.setSpecularColor(ofFloatColor(255,0,128));
-	mShapeMat.setShininess(40);
-	
-	mBoundsMat.setAmbientColor(ofFloatColor(145));
-	mBoundsMat.setDiffuseColor(ofFloatColor(90));
-	mBoundsMat.setSpecularColor(ofFloatColor(255, 255, 255));
-	mBoundsMat.setShininess(10);
 	
 }
 
@@ -89,38 +66,25 @@ void form::draw() {
     //mWorld.drawDebug();
 	
 	ofEnableLighting();
-	mLight.enable();
-	mLight.setPosition(ofVec3f(30, -15+5, -70));
+    
 	ofSetColor(255, 255, 255);
+	mLight.enable();
+	mLight.setPosition(ofVec3f(30, -15+5, -5));
 	
-	ofSetColor(100., 100., 100.);
+	ofSetColor(185, 185, 185);
 	
-    mBoundsMat.begin();
     for(int i=0; i<mBounds.size()-1;i++) {
         mBounds[i]->draw();
     }
-    mBoundsMat.end();
 	
 	ofDisableAlphaBlending();
 	ofDisableBlendMode();
-	
-    if (mShape) {
-        glPushAttrib(GL_ALL_ATTRIB_BITS);
-        glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
-        glEnable(GL_NORMALIZE);
-        glDisable(GL_CULL_FACE);
-        
-        ofSetColor(0, 0, 0);
-        mShapeMat.begin();
-        mShape->transformGL();
-        mMesh.draw(OF_MESH_FILL);
-        mShape->restoreTramsformGL();
-        
-        mShape->draw();
-        
-        glPopAttrib();
-        mShapeMat.end();
-	}
+    
+    ofSetColor(255, 0, 128);
+        for (auto j : mJoints) {
+            j->draw();
+        }
+ 
 	mLight.disable();
 	ofDisableLighting();
 	
@@ -130,7 +94,14 @@ void form::draw() {
 }
 
 void form::updateWorld() {
-    mWorld.update();
+    
+    for (auto j : mJoints) {
+        j->update();
+    }
+    
+    for (auto n : mNodes) {
+        n->update();
+    }
 }
 
 void form::update(ofVboMesh _mesh) {
@@ -164,15 +135,22 @@ void form::update(ofVboMesh _mesh) {
         mMesh.addTriangle(f.a, f.b, f.c);
     }
     
-    if (mShape) {
-        delete mShape;
-        mShape = NULL;
+    mJoints.clear();
+    mNodes.clear();
+    
+    for (auto v : mVerts) {
+        particle *p = new particle(v);
+        mNodes.push_back(p);
     }
     
-    mShape = new ofxBulletCustomShape();
-    mShape->addMesh(mMesh, ofVec3f(0,0,0), true);
-    mShape->create(mWorld.world);
-    mShape->add();
+    for (auto f : mFaces) {
+        spring *a = new spring(mNodes[f.a],mNodes[f.b]);
+        mJoints.push_back(a);
+        spring *b = new spring(mNodes[f.b],mNodes[f.c]);
+        mJoints.push_back(b);
+        spring *c = new spring(mNodes[f.c],mNodes[f.a]);
+        mJoints.push_back(c);
+    }
 
     
     printf("made a mesh with %d vertices and %d faces",mVerts.size(),mFaces.size());

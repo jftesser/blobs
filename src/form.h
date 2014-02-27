@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include "ofMain.h"
-#include "ofxBullet.h"
 
 struct face {
     int a;
@@ -23,6 +22,9 @@ struct face {
         c = _c;
     }
 };
+
+class particle;
+class spring;
 
 class form {
 public:
@@ -46,17 +48,55 @@ private:
     float mMaxEdgeLen;
     
     // simulation
-    ofxBulletWorldRigid mWorld;
-    vector <ofxBulletBox*> mBounds;
-	ofxBulletCustomShape* mBoundsShape;
-	ofMaterial mBoundsMat;
+    vector <ofBoxPrimitive*> mBounds;
 	float mBoundsSz;
 	
-	ofxBulletCustomShape *mShape;
-	ofMaterial mShapeMat;
+	//ofxBulletCustomShape *mShape;
+    vector <spring *> mJoints;
+    vector <particle *> mNodes;
     
     ofCamera mCamera;
 	ofLight mLight;
+};
+
+class particle {
+public:
+    particle(ofPoint _p) {
+        mPos = _p;
+    }
+    ofVec3f mPos, mVelocity, mAcceleration;
+    
+    void update() {
+        mVelocity += mAcceleration;
+        
+        mPos += mVelocity;
+        mAcceleration.set(0,0);
+    }
+    
+};
+
+class spring {
+public:
+    particle *mA, *mB;
+    float mLength;
+    
+    spring(particle *_a, particle *_b) {
+        mA = _a;
+        mB = _b;
+        mLength = mA->mPos.distance(mB->mPos);
+    }
+    
+    void update() {
+        float dist = mA->mPos.distance(mB->mPos);
+        ofVec3f dir = mB->mPos - mA->mPos;
+        dir.normalize();
+        dir *= (dist-mLength)/100;
+        mA->mVelocity += dir;
+    }
+    
+    void draw() {
+        ofLine(mA->mPos, mB->mPos);
+    }
 };
 
 #endif /* defined(__blobs__form__) */
