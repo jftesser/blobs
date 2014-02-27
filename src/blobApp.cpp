@@ -267,4 +267,13 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
     else if (_e.getName() == mShowZipperToggle->getName()) {
         mMasterCurve->showZipper(mShowZipperToggle->getValue());
     }
+    else if (_e.getName() == mExportCutFileButton->getName()) {
+        ofBeginSaveScreenAsPDF("blob-to-cut-"+ofGetTimestampString()+".pdf", false);
+        ofClear(255,255,255);
+        ofPushMatrix();
+        ofTranslate(ofGetWidth()*0.5, ofGetHeight()*0.5);
+        mMasterCurve->mZipperPath->draw();
+        ofPopMatrix();
+        ofEndSaveScreenAsPDF();
+    }
 }

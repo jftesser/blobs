@@ -45,8 +45,8 @@ mZipperWidth(15)
         
         mZipperPath = new ofPath();
         mZipperPath->setFillColor(ofColor(255,0,128,100));
-        mZipperPath->setStrokeColor(ofColor(255,0,128,200));
-        mZipperPath->setStrokeWidth(0.5);
+        //mZipperPath->setStrokeColor(ofColor(255,0,128,200));
+        //mZipperPath->setStrokeWidth(0.5);
         
         recenter();
     }
@@ -311,8 +311,8 @@ void edgeCurve::calcZipper() {
     vector < ofPoint > pts;
     vector < ofVec3f > ns;
     float os = mZipperWidth;
-    int notch_cnt = 30; // must be an even number
-    int step = 6; // must be an even number
+    int notch_cnt = 40; // must be an even number
+    int step = 8; // must be an even number
     float segs = step*notch_cnt;
     mZipperBase = zb.getResampledByCount(segs);
     for (int i=0; i<segs; i++) {
@@ -335,8 +335,8 @@ void edgeCurve::calcZipper() {
             
             mZipperPts.push_back(checkOver(pts[i*step]+ns[i*step]*os*gperc,os*gperc));
             
-            int from = max(0,(int)(i*step-step*0.5));
-            int to = min((int)((pts.size()-1)),(int)(i*step+step*1.5));
+            int from = max(0,(int)(i*step-step*0.5)+1);
+            int to = min((int)((pts.size()-1)),(int)(i*step+step*1.5-1));
             // reverse
             for (int j=i*step;j>=from;j--) {
                 mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc,os*gperc));

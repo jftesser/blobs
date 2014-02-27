@@ -86,11 +86,11 @@ private:
     hole *mSlaveHole;
     ofPolyline mZipperBase;
     vector <ofPoint> mZipperPts;
-    ofPath *mZipperPath;
     bool mDrawZipper;
     float mZipperWidth;
 public:
     bool mHoleSlaved;
+    ofPath *mZipperPath;
 };
 
 
