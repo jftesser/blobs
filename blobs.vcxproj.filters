@@ -1,42 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\ofxBulletWorldRigid.cpp">
-      <Filter>addons\ofxBullet\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCustomShape.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCylinder.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletSphere.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletStaticPlane.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBaseShape.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBox.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCapsule.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCone.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletConvexShape.cpp">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\render\GLDebugDrawer.cpp">
-      <Filter>addons\ofxBullet\src\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\joints\ofxBulletJoint.cpp">
-      <Filter>addons\ofxBullet\src\joints</Filter>
-    </ClCompile>
     <ClCompile Include="src\blobApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -196,6 +160,12 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
       <Filter>addons\ofxXmlSettings\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.cpp">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.cpp">
+      <Filter>addons\ofxMSAObjCPointer\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -203,24 +173,6 @@
     </Filter>
     <Filter Include="addons">
       <UniqueIdentifier>{99ff1d6e-74c8-4187-a726-1a91f4742e8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxBullet">
-      <UniqueIdentifier>{09a96ece-b32e-4feb-88ea-f94208fe5467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxBullet\src">
-      <UniqueIdentifier>{da6e86fc-c55a-402b-b261-2fd836caae70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxBullet\src\events">
-      <UniqueIdentifier>{e8889fea-b3cc-4c18-b71e-17465fe55171}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxBullet\src\joints">
-      <UniqueIdentifier>{0861882f-11b1-4cc4-9599-a24f9696c808}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxBullet\src\render">
-      <UniqueIdentifier>{e8324d24-e03e-49c7-a8bc-87b91aa9045e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxBullet\src\shapes">
-      <UniqueIdentifier>{df56df09-bbd1-462a-ae35-1080fbe8d682}</UniqueIdentifier>
     </Filter>
     <Filter Include="addons\ofxUI">
       <UniqueIdentifier>{70767d52-b3b9-4237-8180-a5be28af43a7}</UniqueIdentifier>
@@ -237,65 +189,26 @@
     <Filter Include="addons\ofxXmlSettings\src">
       <UniqueIdentifier>{acf57c58-dda2-44b5-8e5a-40fd5cc0be97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="addons\ofxMSACore">
+      <UniqueIdentifier>{f20f909c-c391-4ae2-a2c1-3583830fd408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSACore\src">
+      <UniqueIdentifier>{2f53d135-b0d9-405a-beaa-91084fc5f2b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAObjCPointer">
+      <UniqueIdentifier>{2872dbf4-5742-4877-ba2d-8ec426e02280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAObjCPointer\src">
+      <UniqueIdentifier>{643a176e-e94b-427d-8b62-a08c39d4d750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAPhysics">
+      <UniqueIdentifier>{67b17152-5b91-4e2a-b827-c8d62956675d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxMSAPhysics\src">
+      <UniqueIdentifier>{7576dea4-d667-40b0-a1cd-f0a4252afde6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletConstants.h">
-      <Filter>addons\ofxBullet\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletUserData.h">
-      <Filter>addons\ofxBullet\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletUtils.h">
-      <Filter>addons\ofxBullet\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletWorldRigid.h">
-      <Filter>addons\ofxBullet\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBullet.h">
-      <Filter>addons\ofxBullet\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletConvexShape.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCustomShape.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCylinder.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletSphere.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletStaticPlane.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBaseShape.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBox.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCapsule.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCone.h">
-      <Filter>addons\ofxBullet\src\shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\render\GLDebugDrawer.h">
-      <Filter>addons\ofxBullet\src\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\joints\ofxBulletJoint.h">
-      <Filter>addons\ofxBullet\src\joints</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\events\ofxBulletMousePickEvent.h">
-      <Filter>addons\ofxBullet\src\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\events\ofxBulletRaycastData.h">
-      <Filter>addons\ofxBullet\src\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\events\ofxBulletCollisionData.h">
-      <Filter>addons\ofxBullet\src\events</Filter>
-    </ClInclude>
     <ClInclude Include="src\blobApp.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -463,6 +376,69 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
       <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore.h">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore-Cinder.h">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreCommon.h">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.h">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreMath.h">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore-OF.h">
+      <Filter>addons\ofxMSACore\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.h">
+      <Filter>addons\ofxMSAObjCPointer\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics2D.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics3D.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsAttraction.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsCallbacks.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsConstraint.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsDataRecorder.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParams.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticle.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticleDrawer.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticleUpdater.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSector.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSpring.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsWorld.h">
+      <Filter>addons\ofxMSAPhysics\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

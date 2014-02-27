@@ -59,15 +59,15 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBullet\src;..\..\..\addons\ofxBullet\src\events;..\..\..\addons\ofxBullet\src\joints;..\..\..\addons\ofxBullet\src\render;..\..\..\addons\ofxBullet\src\shapes;..\..\..\addons\ofxBullet\libs\bullet2.8.1\include;..\..\..\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\CollisionShapes;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMSACore\src;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSAPhysics\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>BulletCollision_debug.lib;BulletDynamics_debug.lib;LinearMath_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\addons\ofxBullet\libs\bullet2.8.1\lib\vs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBullet\src;..\..\..\addons\ofxBullet\src\events;..\..\..\addons\ofxBullet\src\joints;..\..\..\addons\ofxBullet\src\render;..\..\..\addons\ofxBullet\src\shapes;..\..\..\addons\ofxBullet\libs\bullet2.8.1\include;..\..\..\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\CollisionShapes;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMSAPhysics\src;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSACore\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -86,23 +86,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\addons\ofxBullet\libs\bullet2.8.1\lib\vs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\joints\ofxBulletJoint.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\ofxBulletWorldRigid.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\render\GLDebugDrawer.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBaseShape.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBox.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCapsule.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCone.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletConvexShape.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCustomShape.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCylinder.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletSphere.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletStaticPlane.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIBaseDraws.cpp" />
@@ -158,25 +148,27 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\events\ofxBulletCollisionData.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\events\ofxBulletMousePickEvent.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\events\ofxBulletRaycastData.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\joints\ofxBulletJoint.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBullet.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletConstants.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletUserData.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletUtils.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\ofxBulletWorldRigid.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\render\GLDebugDrawer.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBaseShape.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletBox.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCapsule.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCone.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletConvexShape.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCustomShape.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletCylinder.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletSphere.h" />
-    <ClInclude Include="..\..\..\addons\ofxBullet\src\shapes\ofxBulletStaticPlane.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore-Cinder.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore-OF.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACore.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreCommon.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSACore\src\MSACoreMath.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics2D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysics3D.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsAttraction.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsCallbacks.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsConstraint.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsDataRecorder.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParams.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticle.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticleDrawer.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsParticleUpdater.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSector.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSpring.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsWorld.h" />
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI.h" />
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.h" />
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.h" />
