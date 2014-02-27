@@ -68,15 +68,13 @@ public:
 private:
     vector <ofVec3f> calcSlaveVerts();
     void updatePath();
-    void updatePolyline();
     void recenter();
-    ofPoint checkOver(ofPoint _pt);
+    ofPoint checkOver(ofPoint _pt, float _minos);
     
 private:
     vector <draggableVertex *> mVerts;
     ofPath *mPath;
     ofPolyline *mResampleLine;
-    ofPolyline *mPolyline;
     edgeCurve *mSlavedCurve;
     edgeCurve *mMasterCurve;
     bool mIsSlave;
@@ -86,10 +84,11 @@ private:
     int mVertCnt;
     hole *mHole;
     hole *mSlaveHole;
-    ofPolyline *mZipperBase;
+    ofPolyline mZipperBase;
     vector <ofPoint> mZipperPts;
     ofPath *mZipperPath;
     bool mDrawZipper;
+    float mZipperWidth;
 public:
     bool mHoleSlaved;
 };

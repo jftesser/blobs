@@ -22,10 +22,9 @@ mHole(NULL),
 mSlaveHole(NULL),
 mHoleSlaved(true),
 mResampleLine(NULL),
-mZipperBase(NULL),
 mDrawZipper(NULL),
 mZipperPath(NULL),
-mPolyline(NULL)
+mZipperWidth(15)
 {
     int ind = 0;
     for (auto v : _init_verts) {
@@ -59,33 +58,6 @@ edgeCurve::~edgeCurve() {
     if (mHole) delete mHole;
     if (mSlaveHole) delete mSlaveHole;
     if (mResampleLine) delete mResampleLine;
-}
-
-void edgeCurve::updatePolyline() {
-    if (mPolyline) {
-        delete mPolyline;
-        mPolyline = NULL;
-    }
-    
-    mPolyline = new ofPolyline();
-    
-    for (int ind =0; ind <mVerts.size(); ind++) {
-        int nind = ind+1;
-        if (nind < mVerts.size()) {
-            int nnind = ind-1;
-            if (nnind < 0 ) nnind = 0;
-            
-            draggableVertex *v = mVerts[ind];
-            draggableVertex *nv = mVerts[nind];
-            draggableVertex *nnv = mVerts[nnind];
-            
-            if (ind == 0) {
-                mPolyline->addVertex(v->pos.x,v->pos.y,v->pos.z);
-            }
-            
-            mPolyline->bezierTo((nnv->pos+v->pos)*0.5, v->pos, (v->pos+nv->pos)*0.5);
-        }
-    }
 }
 
 void edgeCurve::updatePath() {
@@ -161,7 +133,7 @@ vector<ofVec3f> edgeCurve::calcSlaveVerts() {
     ofVec3f rotcen = (mVerts[0]->pos+mVerts[mVerts.size()-1]->pos)*0.5;
     vector <ofVec3f> rotatedverts;
     for (auto v : mVerts) {
-        ofVec3f pos; 
+        ofVec3f pos;
 		pos.set(v->pos);
 #ifdef _MSC_VER
 		float pi = 3.14159;
@@ -207,7 +179,7 @@ void edgeCurve::addHole(float _t, float _os, float _r, bool _both) {
     mHole = new hole(_os,_r,_t,this,mPath);
     if (_both)
         mSlaveHole = new hole(_os,_r,_t,mSlavedCurve,mPath);
-
+    
 }
 
 void edgeCurve::updateHole(float _t, float _os, float _r) {
@@ -266,15 +238,13 @@ void edgeCurve::resample(int _vcnt) {
 }
 
 void edgeCurve::draw() {
-    updatePolyline();
-    
     if (mIsSlave == false) {
         updatePath();
         mPath->draw();
     }
     
     if (mLocked == false) {
-      ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+        ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
         ofEnableSmoothing();
         ofSetLineWidth(1.25);
         
@@ -305,19 +275,14 @@ void edgeCurve::draw() {
     ofSetColor(255);
     if (mDrawZipper) {
         ofEnableBlendMode(OF_BLENDMODE_SCREEN);
-            mZipperPath->draw();
+        mZipperPath->draw();
         ofDisableBlendMode();
     }
 }
 void edgeCurve::calcZipper() {
     mZipperPts.clear();
     
-    if (mZipperBase) {
-        delete mZipperBase;
-        mZipperBase = NULL;
-    }
-    
-    mZipperBase = new ofPolyline();
+    ofPolyline zb;
     
     for (int ind =0; ind <mVerts.size(); ind++) {
         draggableVertex *v = mVerts[ind];
@@ -330,32 +295,34 @@ void edgeCurve::calcZipper() {
             draggableVertex *nnv = mVerts[nnind];
             
             if (ind == 0) {
-                mZipperBase->addVertex(v->pos.x,v->pos.y,v->pos.z);
+                zb.addVertex(v->pos.x,v->pos.y,v->pos.z);
             }
             
-            mZipperBase->bezierTo((nnv->pos+v->pos)*0.5, v->pos, (v->pos+nv->pos)*0.5);
+            zb.bezierTo((nnv->pos+v->pos)*0.5, v->pos, (v->pos+nv->pos)*0.5);
             
             
         }
         if (ind == mVerts.size()-1) {
-            mZipperBase->addVertex(v->pos.x,v->pos.y,v->pos.z);
+            zb.addVertex(v->pos.x,v->pos.y,v->pos.z);
         }
     }
     
+    
     vector < ofPoint > pts;
     vector < ofVec3f > ns;
-    float os = 15.0;
+    float os = mZipperWidth;
     int notch_cnt = 30; // must be an even number
     int step = 6; // must be an even number
     float segs = step*notch_cnt;
+    mZipperBase = zb.getResampledByCount(segs);
     for (int i=0; i<segs; i++) {
         float at = i/segs;
         if (at > 1.0) at = 1.0;
-        pts.push_back( mZipperBase->getPointAtPercent(at));
-        ns.push_back(mZipperBase->getNormalAtIndex(mZipperBase->getIndexAtPercent(at)));
+        pts.push_back( mZipperBase.getPointAtPercent(at));
+        ns.push_back(mZipperBase.getNormalAtIndex(mZipperBase.getIndexAtPercent(at)));
     }
     pts.push_back(mVerts[mVerts.size()-1]->pos);
-    ns.push_back(mZipperBase->getNormalAtIndex(mZipperBase->getIndexAtPercent(0.999)));
+    ns.push_back(mZipperBase.getNormalAtIndex(mZipperBase.getIndexAtPercent(0.999)));
     
     float gperc = 0.1; // how much of a gap?
     for (int i=0; i<pts.size()/step; i ++) {
@@ -366,21 +333,21 @@ void edgeCurve::calcZipper() {
         } else {
             mZipperPts.push_back(pts[i*step]);
             
-            mZipperPts.push_back(checkOver(pts[i*step]+ns[i*step]*os*gperc));
+            mZipperPts.push_back(checkOver(pts[i*step]+ns[i*step]*os*gperc,os*gperc));
             
             int from = max(0,(int)(i*step-step*0.5));
             int to = min((int)((pts.size()-1)),(int)(i*step+step*1.5));
             // reverse
             for (int j=i*step;j>=from;j--) {
-                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc));
+                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc,os*gperc));
             }
             // top
             for (int j= from; j<=to; j++) {
-                    mZipperPts.push_back(checkOver(pts[j]+ns[j]*os));
+                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os,os));
             }
             // revese back
             for (int j=to;j>=i*step+step;j--) {
-                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc));
+                mZipperPts.push_back(checkOver(pts[j]+ns[j]*os*gperc,os*gperc));
             }
             
             mZipperPts.push_back(pts[(i+1)*step]);
@@ -414,7 +381,7 @@ void edgeCurve::calcZipper() {
     
 }
 
-ofPoint edgeCurve::checkOver(ofPoint _pt) {
+ofPoint edgeCurve::checkOver(ofPoint _pt, float _min_os) {
     ofPath *path = mPath;
     if (mIsSlave) path = mMasterCurve->mPath;
     ofPolyline pln = path->getOutline()[0];
@@ -425,7 +392,23 @@ ofPoint edgeCurve::checkOver(ofPoint _pt) {
     }
     
     // get distance from self line and opposite line. if closer to opposite, average distance
-    //ofPolyline
+    
+        ofPolyline self = mZipperBase;
+        ofPolyline other;
+        if (mIsSlave) other = mMasterCurve->mZipperBase;
+        else other = mSlavedCurve->mZipperBase;
+        
+        ofPoint spt = self.getClosestPoint(_pt);
+        ofPoint opt = other.getClosestPoint(_pt);
+        float odist = opt.distance(_pt);
+        
+        if (opt.distance(_pt) < _min_os) {
+            float sdist = spt.distance(_pt);
+            float pperc = sdist/(odist+sdist);
+            float sperc = 0.5/pperc;
+            ofPoint cpt = sperc*_pt+(1.0-sperc)*spt;
+            return cpt;
+        }
     
     return _pt;
 }
