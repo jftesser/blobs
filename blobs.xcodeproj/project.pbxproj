@@ -58,6 +58,8 @@
 		6BB1EA8318BA84DD00ACA562 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1EA7E18BA84DD00ACA562 /* ofxXmlSettings.cpp */; };
 		6BB1EA8A18BAAA7700ACA562 /* hole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1EA8818BAAA7700ACA562 /* hole.cpp */; };
 		6BB1EA8D18BAF7F500ACA562 /* form.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1EA8B18BAF7F500ACA562 /* form.cpp */; };
+		6BBA222118BFD0FE0083ECC9 /* MSACoreGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA221E18BFD0FE0083ECC9 /* MSACoreGL.cpp */; };
+		6BBA224918BFD1FF0083ECC9 /* MSAObjCPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA224518BFD1FF0083ECC9 /* MSAObjCPointer.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -217,6 +219,38 @@
 		6BB1EA8918BAAA7700ACA562 /* hole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hole.h; sourceTree = "<group>"; };
 		6BB1EA8B18BAF7F500ACA562 /* form.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = form.cpp; sourceTree = "<group>"; };
 		6BB1EA8C18BAF7F500ACA562 /* form.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = form.h; sourceTree = "<group>"; };
+		6BBA21FA18BFD0C10083ECC9 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		6BBA220218BFD0C10083ECC9 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
+		6BBA220318BFD0C10083ECC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6BBA220518BFD0C10083ECC9 /* MSAPhysics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysics.h; sourceTree = "<group>"; };
+		6BBA220618BFD0C10083ECC9 /* MSAPhysics2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysics2D.h; sourceTree = "<group>"; };
+		6BBA220718BFD0C10083ECC9 /* MSAPhysics3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysics3D.h; sourceTree = "<group>"; };
+		6BBA220818BFD0C10083ECC9 /* MSAPhysicsAttraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsAttraction.h; sourceTree = "<group>"; };
+		6BBA220918BFD0C10083ECC9 /* MSAPhysicsCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsCallbacks.h; sourceTree = "<group>"; };
+		6BBA220A18BFD0C10083ECC9 /* MSAPhysicsConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsConstraint.h; sourceTree = "<group>"; };
+		6BBA220B18BFD0C10083ECC9 /* MSAPhysicsDataRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsDataRecorder.h; sourceTree = "<group>"; };
+		6BBA220C18BFD0C10083ECC9 /* MSAPhysicsParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsParams.h; sourceTree = "<group>"; };
+		6BBA220D18BFD0C10083ECC9 /* MSAPhysicsParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsParticle.h; sourceTree = "<group>"; };
+		6BBA220E18BFD0C10083ECC9 /* MSAPhysicsParticleDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsParticleDrawer.h; sourceTree = "<group>"; };
+		6BBA220F18BFD0C10083ECC9 /* MSAPhysicsParticleUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsParticleUpdater.h; sourceTree = "<group>"; };
+		6BBA221018BFD0C10083ECC9 /* MSAPhysicsSector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsSector.h; sourceTree = "<group>"; };
+		6BBA221118BFD0C10083ECC9 /* MSAPhysicsSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsSpring.h; sourceTree = "<group>"; };
+		6BBA221218BFD0C10083ECC9 /* MSAPhysicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAPhysicsWorld.h; sourceTree = "<group>"; };
+		6BBA221618BFD0FE0083ECC9 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		6BBA221718BFD0FE0083ECC9 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
+		6BBA221818BFD0FE0083ECC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6BBA221A18BFD0FE0083ECC9 /* MSACore-Cinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MSACore-Cinder.h"; sourceTree = "<group>"; };
+		6BBA221B18BFD0FE0083ECC9 /* MSACore-OF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MSACore-OF.h"; sourceTree = "<group>"; };
+		6BBA221C18BFD0FE0083ECC9 /* MSACore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACore.h; sourceTree = "<group>"; };
+		6BBA221D18BFD0FE0083ECC9 /* MSACoreCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreCommon.h; sourceTree = "<group>"; };
+		6BBA221E18BFD0FE0083ECC9 /* MSACoreGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MSACoreGL.cpp; sourceTree = "<group>"; };
+		6BBA221F18BFD0FE0083ECC9 /* MSACoreGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreGL.h; sourceTree = "<group>"; };
+		6BBA222018BFD0FE0083ECC9 /* MSACoreMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreMath.h; sourceTree = "<group>"; };
+		6BBA223718BFD1FF0083ECC9 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		6BBA224218BFD1FF0083ECC9 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
+		6BBA224318BFD1FF0083ECC9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6BBA224518BFD1FF0083ECC9 /* MSAObjCPointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MSAObjCPointer.cpp; sourceTree = "<group>"; };
+		6BBA224618BFD1FF0083ECC9 /* MSAObjCPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAObjCPointer.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -403,9 +437,92 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		6BBA21F918BFD0C10083ECC9 /* ofxMSAPhysics */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA21FA18BFD0C10083ECC9 /* .gitignore */,
+				6BBA220218BFD0C10083ECC9 /* license.md */,
+				6BBA220318BFD0C10083ECC9 /* README.md */,
+				6BBA220418BFD0C10083ECC9 /* src */,
+			);
+			name = ofxMSAPhysics;
+			path = ../../../addons/ofxMSAPhysics;
+			sourceTree = "<group>";
+		};
+		6BBA220418BFD0C10083ECC9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA220518BFD0C10083ECC9 /* MSAPhysics.h */,
+				6BBA220618BFD0C10083ECC9 /* MSAPhysics2D.h */,
+				6BBA220718BFD0C10083ECC9 /* MSAPhysics3D.h */,
+				6BBA220818BFD0C10083ECC9 /* MSAPhysicsAttraction.h */,
+				6BBA220918BFD0C10083ECC9 /* MSAPhysicsCallbacks.h */,
+				6BBA220A18BFD0C10083ECC9 /* MSAPhysicsConstraint.h */,
+				6BBA220B18BFD0C10083ECC9 /* MSAPhysicsDataRecorder.h */,
+				6BBA220C18BFD0C10083ECC9 /* MSAPhysicsParams.h */,
+				6BBA220D18BFD0C10083ECC9 /* MSAPhysicsParticle.h */,
+				6BBA220E18BFD0C10083ECC9 /* MSAPhysicsParticleDrawer.h */,
+				6BBA220F18BFD0C10083ECC9 /* MSAPhysicsParticleUpdater.h */,
+				6BBA221018BFD0C10083ECC9 /* MSAPhysicsSector.h */,
+				6BBA221118BFD0C10083ECC9 /* MSAPhysicsSpring.h */,
+				6BBA221218BFD0C10083ECC9 /* MSAPhysicsWorld.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		6BBA221518BFD0FE0083ECC9 /* ofxMSACore */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA221618BFD0FE0083ECC9 /* .gitignore */,
+				6BBA221718BFD0FE0083ECC9 /* license.md */,
+				6BBA221818BFD0FE0083ECC9 /* README.md */,
+				6BBA221918BFD0FE0083ECC9 /* src */,
+			);
+			name = ofxMSACore;
+			path = ../../../addons/ofxMSACore;
+			sourceTree = "<group>";
+		};
+		6BBA221918BFD0FE0083ECC9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA221A18BFD0FE0083ECC9 /* MSACore-Cinder.h */,
+				6BBA221B18BFD0FE0083ECC9 /* MSACore-OF.h */,
+				6BBA221C18BFD0FE0083ECC9 /* MSACore.h */,
+				6BBA221D18BFD0FE0083ECC9 /* MSACoreCommon.h */,
+				6BBA221E18BFD0FE0083ECC9 /* MSACoreGL.cpp */,
+				6BBA221F18BFD0FE0083ECC9 /* MSACoreGL.h */,
+				6BBA222018BFD0FE0083ECC9 /* MSACoreMath.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		6BBA223618BFD1FF0083ECC9 /* ofxMSAObjCPointer */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA223718BFD1FF0083ECC9 /* .gitignore */,
+				6BBA224218BFD1FF0083ECC9 /* license.md */,
+				6BBA224318BFD1FF0083ECC9 /* README.md */,
+				6BBA224418BFD1FF0083ECC9 /* src */,
+			);
+			name = ofxMSAObjCPointer;
+			path = ../../../addons/ofxMSAObjCPointer;
+			sourceTree = "<group>";
+		};
+		6BBA224418BFD1FF0083ECC9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA224518BFD1FF0083ECC9 /* MSAObjCPointer.cpp */,
+				6BBA224618BFD1FF0083ECC9 /* MSAObjCPointer.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				6BBA223618BFD1FF0083ECC9 /* ofxMSAObjCPointer */,
+				6BBA221518BFD0FE0083ECC9 /* ofxMSACore */,
+				6BBA21F918BFD0C10083ECC9 /* ofxMSAPhysics */,
 				6BB1EA7718BA84DD00ACA562 /* ofxXmlSettings */,
 				6BB1E9EC18BA848100ACA562 /* src */,
 			);
@@ -594,6 +711,7 @@
 				6BB1EA7618BA848100ACA562 /* ofxUIWidgetWithLabel.cpp in Sources */,
 				6BB1EA4E18BA848100ACA562 /* ofxUIBiLabelSlider.cpp in Sources */,
 				6BB1EA6E18BA848100ACA562 /* ofxUITabBar.cpp in Sources */,
+				6BBA222118BFD0FE0083ECC9 /* MSACoreGL.cpp in Sources */,
 				6BB1EA5618BA848100ACA562 /* ofxUIFPSSlider.cpp in Sources */,
 				6BB1EA7418BA848100ACA562 /* ofxUIWaveform.cpp in Sources */,
 				6BB1EA8D18BAF7F500ACA562 /* form.cpp in Sources */,
@@ -637,6 +755,7 @@
 				6BB1EA8318BA84DD00ACA562 /* ofxXmlSettings.cpp in Sources */,
 				6BB1EA6518BA848100ACA562 /* ofxUIRangeSlider.cpp in Sources */,
 				6BB1EA5C18BA848100ACA562 /* ofxUILabel.cpp in Sources */,
+				6BBA224918BFD1FF0083ECC9 /* MSAObjCPointer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

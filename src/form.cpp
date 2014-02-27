@@ -48,6 +48,13 @@ mMaxEdgeLen(40)
         bp->setPosition(startLoc);
 	}
 	
+    mWorld.setGravity(ofVec3f(0, 1, 0));
+	
+	mWorld.setWorldSize(ofVec3f(-mBoundsSz/2, -mBoundsSz/2, -mBoundsSz/2), ofVec3f(mBoundsSz/2, mBoundsSz/2, mBoundsSz/2));
+	mWorld.setSectorCount(1);
+    mWorld.setDrag(0.97f);
+	//mWorld.setDrag(1);
+	//mWorld.enableCollision();
 }
 
 form::~form() {
@@ -88,16 +95,10 @@ void form::draw() {
 }
 
 void form::updateWorld() {
-    for (auto s : mSprings) {
-        s->update();
-    }
-    
-    for (auto p : mParticles) {
-        p->update();
-    }
+    mWorld.update();
     
     for (int i=0; i<mParticles.size();i++) {
-        mMesh.setVertex(i, mParticles[i]->mPos);
+        mMesh.setVertex(i, mParticles[i]->getPosition());
     }
 }
 
@@ -138,26 +139,34 @@ void form::update(ofPath *_path) {
         mMesh.addTriangle(f.a, f.b, f.c);
     }
     
+    mWorld.clear();
     mSprings.clear();
     mParticles.clear();
     
     for (auto v : mVerts) {
-        particle *p = new particle(v);
+        msa::physics::Particle3D *p = new msa::physics::Particle3D(v);
         mParticles.push_back(p);
+        mWorld.addParticle(p);
     }
     
     for (auto f : mFaces) {
         if (unmade(mParticles[f.a],mParticles[f.b])) {
-            spring *a = new spring(mParticles[f.a],mParticles[f.b]);
+            float alen = mParticles[f.a]->getPosition().distance(mParticles[f.b]->getPosition());
+            msa::physics::Spring3D *a =new msa::physics::Spring3D(mParticles[f.a],mParticles[f.b],0.5,alen);
+            mWorld.addConstraint(a);
             mSprings.push_back(a);
         }
         if (unmade(mParticles[f.b],mParticles[f.c])) {
-            spring *b = new spring(mParticles[f.b],mParticles[f.c]);
+            float blen = mParticles[f.b]->getPosition().distance(mParticles[f.c]->getPosition());
+            msa::physics::Spring3D *b = new msa::physics::Spring3D(mParticles[f.b],mParticles[f.c],0.5,blen);
+            mWorld.addConstraint(b);
             mSprings.push_back(b);
         }
         
         if (unmade(mParticles[f.c],mParticles[f.a])) {
-            spring *c = new spring(mParticles[f.c],mParticles[f.a]);
+            float clen = mParticles[f.c]->getPosition().distance(mParticles[f.a]->getPosition());
+            msa::physics::Spring3D *c = new msa::physics::Spring3D(mParticles[f.c],mParticles[f.a],0.5,clen);
+            mWorld.addConstraint(c);
             mSprings.push_back(c);
         }
     }
@@ -189,15 +198,15 @@ void form::snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys) {
 
 		ofPoint avg = (mVerts[i]+pt)*0.5;
         
-        if (_low_polys[0].inside(avg) == false) {
+        if (_low_polys[0].inside(avg) == false || (minind > 0 && pt.distance(mVerts[i]) < mMaxEdgeLen*0.5)) {
             mVerts[i].set(pt);
         }
     }
 }
  
-bool form::unmade(particle *_a, particle *_b) {
+bool form::unmade(msa::physics::Particle3D *_a, msa::physics::Particle3D *_b) {
     for (auto s : mSprings) {
-        if ((_a == s->mA && _b == s->mB) || (_a == s->mB && _b == s->mA)) {
+        if ((_a == s->getA() && _b == s->getA()) || (_a == s->getB() && _b == s->getA())) {
             return false;
         }
     }

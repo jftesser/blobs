@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include "ofMain.h"
+#include "MSAPhysics3D.h"
 
 struct face {
     int a;
@@ -22,9 +23,6 @@ struct face {
         c = _c;
     }
 };
-
-class particle;
-class spring;
 
 class form {
 public:
@@ -38,7 +36,7 @@ private:
     void trySubdivide(face &_f);
     void subdivide(face &_f); 
     int findVert(ofVec3f _v);
-    bool unmade(particle *_a, particle *_b);
+    bool unmade(msa::physics::Particle3D *_a, msa::physics::Particle3D *_b);
     void snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys);
     float area(float _a, float _b, float _c);
 private:
@@ -54,58 +52,12 @@ private:
     vector <ofBoxPrimitive*> mBounds;
 	float mBoundsSz;
 	
-	//ofxBulletCustomShape *mShape;
-    vector <spring *> mSprings;
-    vector <particle *> mParticles;
+	msa::physics::World3D mWorld;
+    vector <msa::physics::Spring3D *> mSprings;
+    vector <msa::physics::Particle3D *> mParticles;
     
     ofCamera mCamera;
 	ofLight mLight;
-};
-
-class particle {
-public:
-    particle(ofPoint _p) {
-        mPos = _p;
-    }
-    ofVec3f mPos, mVelocity, mAcceleration;
-    
-    void update() {
-        
-        mVelocity += mAcceleration;
-        
-        mPos += mVelocity;
-        mAcceleration.set(0,0);
-        
-        /*if (mPos.y< 0 ) {
-            mVelocity.y=0;
-            mPos.y=0;
-        }*/
-    }
-    
-};
-
-class spring {
-public:
-    particle *mA, *mB;
-    float mLength;
-    
-    spring(particle *_a, particle *_b) {
-        mA = _a;
-        mB = _b;
-        mLength = mA->mPos.distance(mB->mPos);
-    }
-    
-    void update() {
-        float dist = mA->mPos.distance(mB->mPos);
-        ofVec3f dir = mB->mPos - mA->mPos;
-        dir.normalize();
-        dir *= (dist-mLength)/100;
-        mA->mVelocity += dir;
-    }
-    
-    void draw() {
-        ofLine(mA->mPos, mB->mPos);
-    }
 };
 
 #endif /* defined(__blobs__form__) */
