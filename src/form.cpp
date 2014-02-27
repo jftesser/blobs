@@ -48,12 +48,12 @@ mMaxEdgeLen(40)
         bp->setPosition(startLoc);
 	}
 	
-    mWorld.setGravity(ofVec3f(0, 1, 0));
+    mWorld.setGravity(ofVec3f(0, 0, 1));
 	
 	mWorld.setWorldSize(ofVec3f(-mBoundsSz/2, -mBoundsSz/2, -mBoundsSz/2), ofVec3f(mBoundsSz/2, mBoundsSz/2, mBoundsSz/2));
 	mWorld.setSectorCount(1);
-    mWorld.setDrag(0.97f);
-	//mWorld.setDrag(1);
+    mWorld.setDrag(0.8);
+    
 	//mWorld.enableCollision();
 }
 
@@ -73,7 +73,7 @@ void form::draw() {
     
 	ofSetColor(255, 255, 255);
 	mLight.enable();
-	mLight.setPosition(ofVec3f(30, -15+5, -5));
+	mLight.setPosition(ofVec3f(30, -15+5, -1));
 	
 	ofSetColor(185, 185, 185);
 	
@@ -104,9 +104,8 @@ void form::updateWorld() {
 
 void form::update(ofPath *_path) {
 	ofPath *lowres = new ofPath(*_path);
-    lowres->setCurveResolution(2);
+    lowres->setCurveResolution(4);
     mRawMesh = lowres->getTessellation();
-    //_path->setCurveResolution(15);
     mRawMesh.enableIndices();
     mMesh.enableIndices();
     
@@ -123,13 +122,24 @@ void form::update(ofPath *_path) {
         mRawFaces.push_back(face(raw_inds[i],raw_inds[i+1],raw_inds[i+2]));
     }
     
+    cullRaw();
+    
     // subdivide
     for (auto f : mRawFaces) {
         trySubdivide(f);
     }
     
     // snap to
-    snap(_path->getOutline(),lowres->getOutline());
+    vector <ofPolyline> resamp_polys;
+    for (auto p : _path->getOutline()) {
+        resamp_polys.push_back( p.getResampledByCount(p.getPerimeter()/(mMaxEdgeLen*0.1)));
+    }
+    
+    cull();
+    
+    snap(resamp_polys,lowres->getOutline());
+    
+    cull();
     
     // make new mesh
     mMesh.clear();
@@ -142,9 +152,15 @@ void form::update(ofPath *_path) {
     mWorld.clear();
     mSprings.clear();
     mParticles.clear();
+    mEdgeParticles.clear();
     
     for (auto v : mVerts) {
-        msa::physics::Particle3D *p = new msa::physics::Particle3D(v);
+        msa::physics::Particle3D *p = new msa::physics::Particle3D(v,0.05,0.2); // pos, mass, diam
+        float at = getIndex(resamp_polys[0], v);
+        if (at >=0) {
+            p->makeFixed();
+            mEdgeParticles.push_back(new part_and_index(p,at));
+        }
         mParticles.push_back(p);
         mWorld.addParticle(p);
     }
@@ -152,20 +168,20 @@ void form::update(ofPath *_path) {
     for (auto f : mFaces) {
         if (unmade(mParticles[f.a],mParticles[f.b])) {
             float alen = mParticles[f.a]->getPosition().distance(mParticles[f.b]->getPosition());
-            msa::physics::Spring3D *a =new msa::physics::Spring3D(mParticles[f.a],mParticles[f.b],0.5,alen);
+            msa::physics::Spring3D *a =new msa::physics::Spring3D(mParticles[f.a],mParticles[f.b],0.99,alen);
             mWorld.addConstraint(a);
             mSprings.push_back(a);
         }
         if (unmade(mParticles[f.b],mParticles[f.c])) {
             float blen = mParticles[f.b]->getPosition().distance(mParticles[f.c]->getPosition());
-            msa::physics::Spring3D *b = new msa::physics::Spring3D(mParticles[f.b],mParticles[f.c],0.5,blen);
+            msa::physics::Spring3D *b = new msa::physics::Spring3D(mParticles[f.b],mParticles[f.c],0.99,blen);
             mWorld.addConstraint(b);
             mSprings.push_back(b);
         }
         
         if (unmade(mParticles[f.c],mParticles[f.a])) {
             float clen = mParticles[f.c]->getPosition().distance(mParticles[f.a]->getPosition());
-            msa::physics::Spring3D *c = new msa::physics::Spring3D(mParticles[f.c],mParticles[f.a],0.5,clen);
+            msa::physics::Spring3D *c = new msa::physics::Spring3D(mParticles[f.c],mParticles[f.a],0.99,clen);
             mWorld.addConstraint(c);
             mSprings.push_back(c);
         }
@@ -174,6 +190,47 @@ void form::update(ofPath *_path) {
 	delete lowres;
     
     printf("made a mesh with %d vertices and %d faces",mVerts.size(),mFaces.size());
+}
+
+void form::cull() {
+    for (int i=0; i<mVerts.size(); i++) {
+        for (int j=i+1; j<mVerts.size(); j++) {
+            float tol = 0.3;
+            if (mVerts[i].distance(mVerts[j]) < tol) {
+                for (int k=0;k<mFaces.size();k++) {
+                    if (mFaces[k].a == j) mFaces[k].a = i;
+                    if (mFaces[k].b == j) mFaces[k].b = i;
+                    if (mFaces[k].c == j) mFaces[k].c = i;
+                }
+            }
+        }
+    }
+}
+
+void form::cullRaw() {
+    for (int i=0; i<mVerts.size(); i++) {
+        for (int j=i+1; j<mVerts.size(); j++) {
+            float tol = 0.3;
+            if (mVerts[i].distance(mVerts[j]) < tol) {
+                for (int k=0;k<mRawFaces.size();k++) {
+                    if (mRawFaces[k].a == j) mRawFaces[k].a = i;
+                    if (mRawFaces[k].b == j) mRawFaces[k].b = i;
+                    if (mRawFaces[k].c == j) mRawFaces[k].c = i;
+                }
+            }
+        }
+    }
+}
+
+int form::getIndex(ofPolyline _pln, ofPoint _p) {
+    int at = -1;
+    unsigned int ind = 0;
+    ofPoint cpt = _pln.getClosestPoint(_p, &ind);
+    float tol = 0.3;
+    if (cpt.distance(_p) < tol) {
+        at = ind;
+    }
+    return at;
 }
 
 void form::snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys) {
@@ -198,7 +255,7 @@ void form::snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys) {
 
 		ofPoint avg = (mVerts[i]+pt)*0.5;
         
-        if (_low_polys[0].inside(avg) == false || (minind > 0 && pt.distance(mVerts[i]) < mMaxEdgeLen*0.5)) {
+        if ((_low_polys[0].inside(avg) == false || minind > 0 ) && pt.distance(mVerts[i]) < mMaxEdgeLen*0.25) {
             mVerts[i].set(pt);
         }
     }

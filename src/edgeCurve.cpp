@@ -111,7 +111,6 @@ void edgeCurve::updatePath() {
     if (mSlaveHole) {
         mSlaveHole->addToPath(mPath);
     }
-    
 }
 void edgeCurve::update() {
     calcZipper();

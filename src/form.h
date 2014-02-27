@@ -24,6 +24,15 @@ struct face {
     }
 };
 
+struct part_and_index {
+    msa::physics::Particle3D *part;
+    int index;
+    part_and_index(msa::physics::Particle3D *_part, int _index) {
+        part = _part;
+        index = _index;
+    }
+};
+
 class form {
 public:
     form();
@@ -32,6 +41,7 @@ public:
     void updateWorld();
     void draw();
     void update(ofPath *_path);
+    
 private:
     void trySubdivide(face &_f);
     void subdivide(face &_f); 
@@ -39,6 +49,10 @@ private:
     bool unmade(msa::physics::Particle3D *_a, msa::physics::Particle3D *_b);
     void snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys);
     float area(float _a, float _b, float _c);
+    int getIndex(ofPolyline _pln, ofPoint _p);
+    void cull();
+    void cullRaw();
+    
 private:
     // mesh grabbing and processing
     ofVboMesh mRawMesh;
@@ -49,15 +63,16 @@ private:
     float mMaxEdgeLen;
     
     // simulation
-    vector <ofBoxPrimitive*> mBounds;
 	float mBoundsSz;
-	
 	msa::physics::World3D mWorld;
     vector <msa::physics::Spring3D *> mSprings;
     vector <msa::physics::Particle3D *> mParticles;
+    vector <part_and_index *> mEdgeParticles;
     
+    // appearance
     ofCamera mCamera;
 	ofLight mLight;
+    vector <ofBoxPrimitive*> mBounds;
 };
 
 #endif /* defined(__blobs__form__) */

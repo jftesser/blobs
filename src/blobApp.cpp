@@ -125,7 +125,7 @@ void blobApp::update(){
             mForm->update(mMasterCurve->getPath());
     }
     
-    //if (mSimulateToggle->getValue())
+    if (mSimulateToggle->getValue())
         mForm->updateWorld();
     
     m3DFbo.begin();
