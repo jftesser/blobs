@@ -33,11 +33,14 @@ public:
     
     void updateWorld();
     void draw();
-    void update(ofVboMesh _mesh);
+    void update(ofPath *_path);
 private:
     void trySubdivide(face &_f);
-    void subdivide(face &_f);
+    void subdivide(face &_f); 
     int findVert(ofVec3f _v);
+    bool unmade(particle *_a, particle *_b);
+    void snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys);
+    float area(float _a, float _b, float _c);
 private:
     // mesh grabbing and processing
     ofVboMesh mRawMesh;
@@ -52,8 +55,8 @@ private:
 	float mBoundsSz;
 	
 	//ofxBulletCustomShape *mShape;
-    vector <spring *> mJoints;
-    vector <particle *> mNodes;
+    vector <spring *> mSprings;
+    vector <particle *> mParticles;
     
     ofCamera mCamera;
 	ofLight mLight;
@@ -67,10 +70,16 @@ public:
     ofVec3f mPos, mVelocity, mAcceleration;
     
     void update() {
+        
         mVelocity += mAcceleration;
         
         mPos += mVelocity;
         mAcceleration.set(0,0);
+        
+        /*if (mPos.y< 0 ) {
+            mVelocity.y=0;
+            mPos.y=0;
+        }*/
     }
     
 };

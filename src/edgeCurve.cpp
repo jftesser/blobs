@@ -63,7 +63,7 @@ edgeCurve::~edgeCurve() {
 void edgeCurve::updatePath() {
     int ind =0;
     mPath->clear();
-    mPath->setCurveResolution(10);
+    mPath->setCurveResolution(20);
     
     for (int ind =0; ind <mVerts.size(); ind++) {
         int nind = ind+1;
@@ -463,12 +463,4 @@ void edgeCurve::mouseReleased(int _x, int _y, int _button){
     if (mIsSlave == false) recenter();
 }
 
-ofVboMesh edgeCurve::getMesh() {
-    ofVboMesh tess;
-    if (mPath) {
-        tess = ofVboMesh(mPath->getTessellation());
-    }
-    
-    return tess;
-}
 

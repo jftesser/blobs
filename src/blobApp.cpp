@@ -122,10 +122,11 @@ void blobApp::update(){
         mMasterCurve->update();
         mMasterCurve->updateHole(mHolePosSlider->getScaledValue(), mHoleOSSlider->getScaledValue(), mHoleSizeSlider->getScaledValue());
         if (mDynamic)
-            mForm->update(mMasterCurve->getMesh());
+            mForm->update(mMasterCurve->getPath());
     }
     
-    mForm->updateWorld();
+    //if (mSimulateToggle->getValue())
+        mForm->updateWorld();
     
     m3DFbo.begin();
     ofEnableSmoothing();
@@ -262,7 +263,7 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
         mDynamic = mDynamicToggle->getValue();
     }
     else if (_e.getName() == mUpdateButton->getName()) {
-        mForm->update(mMasterCurve->getMesh());
+        mForm->update(mMasterCurve->getPath());
     }
     else if (_e.getName() == mShowZipperToggle->getName()) {
         mMasterCurve->showZipper(mShowZipperToggle->getValue());

@@ -59,7 +59,7 @@ public:
     edgeCurve *getSlave() {return mSlavedCurve;};
     bool isLocked() {return mLocked;};
     bool isSlave() {return mIsSlave;};
-    ofVboMesh getMesh();
+    ofPath *getPath() {return mPath;};
     
     // setters
     void setMaster(edgeCurve *_mc) {mMasterCurve = _mc;};

@@ -56,14 +56,11 @@ form::~form() {
 
 void form::draw() {
     
-    //ofSetColor(0, 0, 0);
-    //mMesh.draw(OF_MESH_WIREFRAME);
     
     glEnable( GL_DEPTH_TEST );
 	
 	mCamera.begin();
 	ofSetColor(255,0,128);
-    //mWorld.drawDebug();
 	
 	ofEnableLighting();
     
@@ -81,31 +78,34 @@ void form::draw() {
 	ofDisableBlendMode();
     
     ofSetColor(255, 0, 128);
-        for (auto j : mJoints) {
-            j->draw();
-        }
- 
+    mMesh.ofMesh::draw(OF_MESH_WIREFRAME);
 	mLight.disable();
 	ofDisableLighting();
 	
 	mCamera.end();
 	glDisable(GL_DEPTH_TEST);
-
+    
 }
 
 void form::updateWorld() {
-    
-    for (auto j : mJoints) {
-        j->update();
+    for (auto s : mSprings) {
+        s->update();
     }
     
-    for (auto n : mNodes) {
-        n->update();
+    for (auto p : mParticles) {
+        p->update();
+    }
+    
+    for (int i=0; i<mParticles.size();i++) {
+        mMesh.setVertex(i, mParticles[i]->mPos);
     }
 }
 
-void form::update(ofVboMesh _mesh) {
-    mRawMesh = _mesh;
+void form::update(ofPath *_path) {
+	ofPath *lowres = new ofPath(*_path);
+    lowres->setCurveResolution(2);
+    mRawMesh = lowres->getTessellation();
+    //_path->setCurveResolution(15);
     mRawMesh.enableIndices();
     mMesh.enableIndices();
     
@@ -127,6 +127,9 @@ void form::update(ofVboMesh _mesh) {
         trySubdivide(f);
     }
     
+    // snap to
+    snap(_path->getOutline(),lowres->getOutline());
+    
     // make new mesh
     mMesh.clear();
     mMesh.addVertices(mVerts);
@@ -135,25 +138,70 @@ void form::update(ofVboMesh _mesh) {
         mMesh.addTriangle(f.a, f.b, f.c);
     }
     
-    mJoints.clear();
-    mNodes.clear();
+    mSprings.clear();
+    mParticles.clear();
     
     for (auto v : mVerts) {
         particle *p = new particle(v);
-        mNodes.push_back(p);
+        mParticles.push_back(p);
     }
     
     for (auto f : mFaces) {
-        spring *a = new spring(mNodes[f.a],mNodes[f.b]);
-        mJoints.push_back(a);
-        spring *b = new spring(mNodes[f.b],mNodes[f.c]);
-        mJoints.push_back(b);
-        spring *c = new spring(mNodes[f.c],mNodes[f.a]);
-        mJoints.push_back(c);
+        if (unmade(mParticles[f.a],mParticles[f.b])) {
+            spring *a = new spring(mParticles[f.a],mParticles[f.b]);
+            mSprings.push_back(a);
+        }
+        if (unmade(mParticles[f.b],mParticles[f.c])) {
+            spring *b = new spring(mParticles[f.b],mParticles[f.c]);
+            mSprings.push_back(b);
+        }
+        
+        if (unmade(mParticles[f.c],mParticles[f.a])) {
+            spring *c = new spring(mParticles[f.c],mParticles[f.a]);
+            mSprings.push_back(c);
+        }
     }
-
+    
+	delete lowres;
     
     printf("made a mesh with %d vertices and %d faces",mVerts.size(),mFaces.size());
+}
+
+void form::snap(vector<ofPolyline> _polys,vector<ofPolyline> _low_polys) {
+    for (int i=0; i<mVerts.size();i++) {
+        float mind = -1;
+        float minind = -1;
+        ofPoint pt;
+		ofPoint lpt;
+        int ind = 0;
+        for (auto p : _polys) {
+            ofPoint tpt = p.getClosestPoint( mVerts[i]);
+            float d = tpt.distance(mVerts[i]);
+            if (mind > d || mind < 0) {
+                mind = d;
+                minind = ind;
+                pt = tpt;
+            }
+            ind++;
+        }
+
+		lpt =  _low_polys[minind].getClosestPoint(mVerts[i]);
+
+		ofPoint avg = (mVerts[i]+pt)*0.5;
+        
+        if (_low_polys[0].inside(avg) == false) {
+            mVerts[i].set(pt);
+        }
+    }
+}
+ 
+bool form::unmade(particle *_a, particle *_b) {
+    for (auto s : mSprings) {
+        if ((_a == s->mA && _b == s->mB) || (_a == s->mB && _b == s->mA)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void form::trySubdivide(face &_f) {
@@ -162,11 +210,17 @@ void form::trySubdivide(face &_f) {
     dbc = mVerts[_f.b].distance(mVerts[_f.c]);
     dca = mVerts[_f.c].distance(mVerts[_f.a]);
     
-    if (dab > mMaxEdgeLen || dbc > mMaxEdgeLen || dca > mMaxEdgeLen) {
+    if (dab > mMaxEdgeLen || dbc > mMaxEdgeLen || dca > mMaxEdgeLen || area(dab, dbc, dca) > area(mMaxEdgeLen*0.5,mMaxEdgeLen*0.5,mMaxEdgeLen*0.5) ) {
         subdivide(_f);
     } else {
         mFaces.push_back(_f);
     }
+}
+
+float form::area(float _a, float _b, float _c) {
+    float s = (_a+_b+_c)/2.0;
+    
+    return sqrt(s*(s-_a)*(s-_b)*(s-_c));
 }
 
 void form::subdivide(face &_f) {
