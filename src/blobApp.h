@@ -56,6 +56,5 @@ private:
     
     // bg
     ofFbo m2DFbo;
-    ofFbo m3DFbo;
     float mBorder;
 };

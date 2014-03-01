@@ -60,6 +60,7 @@ public:
     bool isLocked() {return mLocked;};
     bool isSlave() {return mIsSlave;};
     ofPath *getPath() {return mPath;};
+    ofPolyline getBasePoly() {return mZipperBase;};
     
     // setters
     void setMaster(edgeCurve *_mc) {mMasterCurve = _mc;};

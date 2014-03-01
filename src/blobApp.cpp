@@ -29,18 +29,13 @@ void blobApp::setup(){
     mFlatOs = ofVec2f(ofGetHeight()*0.5, ofGetHeight()*0.5);
     
     // 3D Setup
-    mForm = new form();
+    mForm = new form(mMasterCurve,mSlaveCurve);
     
     // FBOs Setup
     m2DFbo.allocate(ofGetHeight(), ofGetHeight(),GL_RGB);
     m2DFbo.begin();
     ofClear(255,255,255);
     m2DFbo.end();
-    
-    m3DFbo.allocate(ofGetHeight(), ofGetHeight(),GL_RGB);
-    m3DFbo.begin();
-    ofClear(255,255,255);
-    m3DFbo.end();
     
     
     float stdsz = 20;
@@ -122,18 +117,11 @@ void blobApp::update(){
         mMasterCurve->update();
         mMasterCurve->updateHole(mHolePosSlider->getScaledValue(), mHoleOSSlider->getScaledValue(), mHoleSizeSlider->getScaledValue());
         if (mDynamic)
-            mForm->update(mMasterCurve->getPath());
+            mForm->update();
     }
     
     if (mSimulateToggle->getValue())
         mForm->updateWorld();
-    
-    m3DFbo.begin();
-    ofEnableSmoothing();
-    ofSetCircleResolution(60);
-    ofClear(255,255,255);
-    mForm->draw();
-    m3DFbo.end();
     
     m2DFbo.begin();
     ofEnableSmoothing();
@@ -162,7 +150,7 @@ void blobApp::draw(){
     
     ofSetColor(255);
     m2DFbo.draw(0,0);
-    m3DFbo.draw(ofGetWidth()*0.5,0);
+    mForm->draw();
     
     // GUI
     ofSetColor(90);
@@ -170,11 +158,22 @@ void blobApp::draw(){
     float b = 12;
     ofRect(ofGetWidth()*0.5-b*0.5,0,b, ofGetHeight());
     
+    if (mSimulateToggle->getValue()) {
+    ofSetColor(255, 0, 128);
+    ofTrueTypeFont font;
+    font.loadFont("GUI/Gotham-Bold.ttf", 12);
+    font.drawString("tap the 'z' key to zip the from up and 'x' to unzip.\n\n'c' releases the corners", ofGetHeight()+40,40);
+    }
+    
 }
 
 //--------------------------------------------------------------
 void blobApp::keyPressed(int _key){
-
+    if (_key == 'z') mForm->zipNext();
+    
+    if (_key == 'x') mForm->unzipLast();
+    
+    if (_key == 'c') mForm->releaseCorners();
 }
 
 //--------------------------------------------------------------
@@ -262,13 +261,13 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
     else if (_e.getName() == mDynamicToggle->getName()) {
         mDynamic = mDynamicToggle->getValue();
     }
-    else if (_e.getName() == mUpdateButton->getName()) {
-        mForm->update(mMasterCurve->getPath());
+    else if (_e.getName() == mUpdateButton->getName() && mUpdateButton->getValue()) {
+        mForm->update();
     }
     else if (_e.getName() == mShowZipperToggle->getName()) {
         mMasterCurve->showZipper(mShowZipperToggle->getValue());
     }
-    else if (_e.getName() == mExportCutFileButton->getName()) {
+    else if (_e.getName() == mExportCutFileButton->getName() && mExportCutFileButton->getValue()) {
         ofBeginSaveScreenAsPDF("blob-to-cut-"+ofGetTimestampString()+".pdf", false);
         ofClear(255,255,255);
         ofPushMatrix();
@@ -276,5 +275,8 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
         mMasterCurve->mZipperPath->draw();
         ofPopMatrix();
         ofEndSaveScreenAsPDF();
+    }
+    else if (_e.getName() == mExportSTLButton->getName() && mExportSTLButton->getValue()) {
+        mForm->exportModel();
     }
 }
