@@ -144,14 +144,10 @@ void form::draw() {
         if (i < mZipperSprings.size()) {
             ofLine(mZipperSprings[i]->getOneEnd()->getPosition(),mZipperSprings[i]->getTheOtherEnd()->getPosition());
         }
+        if (i < mOuterZipperSprings.size()) {
+            ofLine(mOuterZipperSprings[i]->getOneEnd()->getPosition(),mOuterZipperSprings[i]->getTheOtherEnd()->getPosition());
+        }
     }
-    
-    
-    /*ofSetColor(255,0,255);
-    for (int i=0; i<mMiddleSprings.size();i++) {
-            ofLine(mMiddleSprings[i]->getOneEnd()->getPosition(),mMiddleSprings[i]->getTheOtherEnd()->getPosition());
-        
-    }*/
     
     
 	mCamera.end();
@@ -253,6 +249,8 @@ void form::update() {
     mSlaveEdgeParticles.clear();
     for(auto p : mZipperSprings) p->release();
     mZipperSprings.clear();
+    for(auto p : mOuterZipperSprings) p->release();
+    mOuterZipperSprings.clear();
     for(auto p : mBottomSprings) p->release();
     mBottomSprings.clear();
     for(auto p : mBottomParticles) p->release();
@@ -362,11 +360,19 @@ void form::update() {
         int sind = (1.0-(float)(i)/(float)(mMasterEdgeParticles.size()-1))*(mSlaveEdgeParticles.size()-1);
         msa::physics::Particle3D *sm = mSlaveEdgeParticles[sind]->part;
         
+        msa::physics::Particle3D *bpm = mBottomParticles[mMasterEdgeParticles[i]->array_ind];
+        msa::physics::Particle3D *bsm = mBottomParticles[mSlaveEdgeParticles[sind]->array_ind];
+        
         if (sm->getPosition().distance(pm->getPosition()) > mTol) {
             pm->retain();
             sm->retain();
             msa::physics::Spring3D *spring = new msa::physics::Spring3D(pm,sm,strength*0.25,0.0);
             mZipperSprings.push_back(spring);
+            
+            bpm->retain();
+            bsm->retain();
+            msa::physics::Spring3D *bspring = new msa::physics::Spring3D(bpm,bsm,strength*0.25,0.0);
+            mOuterZipperSprings.push_back(bspring);
         }
         
     }
@@ -395,8 +401,14 @@ void form::zipNext() {
     if (mAtZip < mZipperSprings.size()) {
         mZipperSprings[mAtZip]->setStrength(0.5);
         mWorld.addConstraint(mZipperSprings[mAtZip]);
-        mZipperSprings[mAtZip]->getA()->release();
+        mZipperSprings[mAtZip]->getA()->release(); // for correct reference counting on destruct
         mZipperSprings[mAtZip]->getB()->release();
+        
+        mOuterZipperSprings[mAtZip]->setStrength(0.5);
+        mWorld.addConstraint(mOuterZipperSprings[mAtZip]);
+        mOuterZipperSprings[mAtZip]->getA()->release(); // for correct reference counting on destruct
+        mOuterZipperSprings[mAtZip]->getB()->release();
+        
         mAtZip++;
     }
 }
@@ -405,6 +417,7 @@ void form::unzipLast() {
     if (mAtZip < mZipperSprings.size() && mAtZip > 0) {
         --mAtZip;
         mZipperSprings[mAtZip]->setStrength(0);
+        mOuterZipperSprings[mAtZip]->setStrength(0);
     }
 }
 

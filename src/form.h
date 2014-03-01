@@ -92,6 +92,7 @@ private:
     vector <part_and_index *> mMasterEdgeParticles;
     vector <part_and_index *> mSlaveEdgeParticles;
     vector <msa::physics::Spring3D *> mZipperSprings;
+    vector <msa::physics::Spring3D *> mOuterZipperSprings;
     int mAtZip;
     
     // appearance
