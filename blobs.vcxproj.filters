@@ -166,6 +166,12 @@
     <ClCompile Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.cpp">
       <Filter>addons\ofxMSAObjCPointer\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSTL\src\ofxSTLExporter.cpp">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSTL\src\ofxSTLImporter.cpp">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -206,6 +212,15 @@
     </Filter>
     <Filter Include="addons\ofxMSAPhysics\src">
       <UniqueIdentifier>{7576dea4-d667-40b0-a1cd-f0a4252afde6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSTL">
+      <UniqueIdentifier>{b0c1e113-976b-4823-bf58-2536a7a29473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSTL\src">
+      <UniqueIdentifier>{f63d95a0-9d8d-4ff9-a08c-5b9564619cd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSTL\src\utils">
+      <UniqueIdentifier>{0d2252d7-ac7f-4f88-909b-0ec0d20df2ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +454,39 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsWorld.h">
       <Filter>addons\ofxMSAPhysics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLBase.h">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLExporter.h">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLFacet.h">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLImporter.h">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTL.h">
+      <Filter>addons\ofxSTL\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLASCIIReader.h">
+      <Filter>addons\ofxSTL\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLASCIIWriter.h">
+      <Filter>addons\ofxSTL\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLBinaryReader.h">
+      <Filter>addons\ofxSTL\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLBinaryWriter.h">
+      <Filter>addons\ofxSTL\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLReaderBase.h">
+      <Filter>addons\ofxSTL\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLWriterBase.h">
+      <Filter>addons\ofxSTL\src\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

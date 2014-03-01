@@ -59,7 +59,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMSACore\src;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSAPhysics\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMSACore\src;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSAPhysics\src;..\..\..\addons\ofxSTL\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMSAPhysics\src;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSACore\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMSAPhysics\src;..\..\..\addons\ofxMSAObjCPointer\src;..\..\..\addons\ofxMSACore\src;..\..\..\addons\ofxSTL\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -93,6 +93,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\addons\ofxMSACore\src\MSACoreGL.cpp" />
     <ClCompile Include="..\..\..\addons\ofxMSAObjCPointer\src\MSAObjCPointer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxSTL\src\ofxSTLExporter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxSTL\src\ofxSTLImporter.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.cpp" />
     <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIBaseDraws.cpp" />
@@ -169,6 +171,17 @@
     <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSector.h" />
     <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsSpring.h" />
     <ClInclude Include="..\..\..\addons\ofxMSAPhysics\src\MSAPhysicsWorld.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTL.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLBase.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLExporter.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLFacet.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\ofxSTLImporter.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLASCIIReader.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLASCIIWriter.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLBinaryReader.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLBinaryWriter.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLReaderBase.h" />
+    <ClInclude Include="..\..\..\addons\ofxSTL\src\utils\ofxSTLWriterBase.h" />
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI.h" />
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.h" />
     <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.h" />
