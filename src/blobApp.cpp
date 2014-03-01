@@ -146,7 +146,7 @@ void blobApp::draw(){
     }
     
     
-    ofBackground(90);
+    ofBackground(185);
     
     ofSetColor(255);
     m2DFbo.draw(0,0);
