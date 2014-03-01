@@ -86,14 +86,11 @@ void blobApp::setup(){
     ofAddListener(mHoleGUI->newGUIEvent, this, &blobApp::guiEvent);
     
     hx = ofGetWidth()*0.5+stdsz*2;
-    at = ofGetHeight()-stdsz*8.5;
+    at = ofGetHeight()-stdsz*6.5;
     m3DGUI = new ofxUICanvas();
     m3DGUI->setFont("GUI/Gotham-Bold.ttf");
     m3DGUI->setUIColors(grey, trans, trans, pinktrans, pink, pink, pink);
     m3DGUI->setDrawBack(false);
-    mDynamicToggle = new ofxUIToggle("dynamic update", false, stdsz,stdsz,hx,at);
-    m3DGUI->addWidget(mDynamicToggle);
-    at += stdsz*2;
     mUpdateButton = new ofxUIButton("update", false, stdsz,stdsz,hx,at);
     m3DGUI->addWidget(mUpdateButton);
     at += stdsz*2;
@@ -106,7 +103,6 @@ void blobApp::setup(){
     m3DGUI->autoSizeToFitWidgets();
     ofAddListener(m3DGUI->newGUIEvent, this, &blobApp::guiEvent);
     
-    mDynamic = false;
     
     
 }
@@ -116,8 +112,6 @@ void blobApp::update(){
     if (mMasterCurve) {
         mMasterCurve->update();
         mMasterCurve->updateHole(mHolePosSlider->getScaledValue(), mHoleOSSlider->getScaledValue(), mHoleSizeSlider->getScaledValue());
-        if (mDynamic)
-            mForm->update();
     }
     
     if (mSimulateToggle->getValue())
@@ -257,9 +251,6 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
                 mHoleToggle->setName("add hole");
             }
         }
-    }
-    else if (_e.getName() == mDynamicToggle->getName()) {
-        mDynamic = mDynamicToggle->getValue();
     }
     else if (_e.getName() == mUpdateButton->getName() && mUpdateButton->getValue()) {
         mForm->update();

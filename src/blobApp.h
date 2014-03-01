@@ -45,11 +45,9 @@ private:
     ofxUISlider *mHolePosSlider;
     
     ofxUICanvas *m3DGUI;
-    ofxUIToggle *mDynamicToggle;
     ofxUIButton *mUpdateButton;
     ofxUIToggle *mSimulateToggle;
     ofxUIButton *mExportSTLButton;
-    bool mDynamic;
     
     // 3d
     form *mForm;
