@@ -74,6 +74,8 @@ private:
     
 private:
     vector <draggableVertex *> mVerts;
+    void clearVerts();
+    
     ofPath *mPath;
     ofPolyline *mResampleLine;
     edgeCurve *mSlavedCurve;

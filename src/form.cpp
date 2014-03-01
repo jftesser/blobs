@@ -242,11 +242,12 @@ void form::update() {
     }
     
     //mMesh = mRawMesh;
-    
+
     mSprings.clear();
     mParticles.clear();
     mMasterEdgeParticles.clear();
     mSlaveEdgeParticles.clear();
+    for(int i = mAtZip; i < mZipperSprings.size(); ++i) mZipperSprings[i]->release();
     mZipperSprings.clear();
     mBottomSprings.clear();
     mBottomParticles.clear();

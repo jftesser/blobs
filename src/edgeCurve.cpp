@@ -53,7 +53,15 @@ mZipperWidth(15)
     
 }
 
+void
+edgeCurve::clearVerts() {
+    for(auto v : mVerts)
+        delete v;
+    mVerts.clear();
+}
+
 edgeCurve::~edgeCurve() {
+    clearVerts();
     if (mPath) delete mPath;
     if (mHole) delete mHole;
     if (mSlaveHole) delete mSlaveHole;
@@ -121,7 +129,7 @@ void edgeCurve::update() {
 
 void edgeCurve::forceUpdateVerts(vector<ofVec3f> _verts) {
     int ind = 0;
-    mVerts.clear();
+    clearVerts();
     for (auto v : _verts) {
         mVerts.push_back(new draggableVertex(v,ind));
         ind++;
@@ -225,7 +233,7 @@ void edgeCurve::resample(int _vcnt) {
     
     ofPolyline rpln = mResampleLine->getResampledBySpacing(mResampleLine->getPerimeter()/(_vcnt+0.001));
     
-    mVerts.clear();
+    clearVerts();
     vector <ofPoint> pts = rpln.getVertices();
     
     ind =0;
