@@ -4,3 +4,4 @@ bin/blobs*
 obj/
 blobs.xcodeproj/project.xcworkspace/xcuserdata/jftesser.xcuserdatad/UserInterfaceState.xcuserstate
 blobs.xcodeproj/xcuserdata/jftesser.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+*.sdf
