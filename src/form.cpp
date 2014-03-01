@@ -243,15 +243,23 @@ void form::update() {
     
     //mMesh = mRawMesh;
 
+    for(auto p : mSprings) p->release();
     mSprings.clear();
+    for(auto p : mParticles) p->release();
     mParticles.clear();
+    for(auto p : mMasterEdgeParticles) delete p;
     mMasterEdgeParticles.clear();
+    for(auto p : mSlaveEdgeParticles) delete p;
     mSlaveEdgeParticles.clear();
-    for(int i = mAtZip; i < mZipperSprings.size(); ++i) mZipperSprings[i]->release();
+    for(auto p : mZipperSprings) p->release();
     mZipperSprings.clear();
+    for(auto p : mBottomSprings) p->release();
     mBottomSprings.clear();
+    for(auto p : mBottomParticles) p->release();
     mBottomParticles.clear();
+    for(auto p : mMiddleSprings) p->release();
     mMiddleSprings.clear();
+
     mWorld.clear();
     
     float thickness = 10;
@@ -355,6 +363,8 @@ void form::update() {
         msa::physics::Particle3D *sm = mSlaveEdgeParticles[sind]->part;
         
         if (sm->getPosition().distance(pm->getPosition()) > mTol) {
+            pm->retain();
+            sm->retain();
             msa::physics::Spring3D *spring = new msa::physics::Spring3D(pm,sm,strength*0.25,0.0);
             mZipperSprings.push_back(spring);
         }
@@ -385,6 +395,8 @@ void form::zipNext() {
     if (mAtZip < mZipperSprings.size()) {
         mZipperSprings[mAtZip]->setStrength(0.5);
         mWorld.addConstraint(mZipperSprings[mAtZip]);
+        mZipperSprings[mAtZip]->getA()->release();
+        mZipperSprings[mAtZip]->getB()->release();
         mAtZip++;
     }
 }
