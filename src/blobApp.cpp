@@ -59,7 +59,7 @@ void blobApp::setup(){
     ofAddListener(mResolutionGUI->newGUIEvent, this, &blobApp::guiEvent);
     
     float hx = ofGetHeight()-stdsz*2;
-    float at = ofGetHeight()-stdsz*9.5;
+    float at = ofGetHeight()-stdsz*11;
     mHoleGUI = new ofxUICanvas();
     mHoleGUI->setFont("GUI/Gotham-Bold.ttf");
     mHoleGUI->setUIColors(grey, trans, trans, pinktrans, pink, pink, pink);
@@ -69,9 +69,9 @@ void blobApp::setup(){
     at += stdsz*1.5;
     mMirrorHolesToggle = new ofxUIToggle("mirror hole", true, stdsz,stdsz,hx,at);
     mHoleGUI->addWidget(mMirrorHolesToggle);
-    /*at += stdsz*1.5;
-    mFreeSlaveHoleToggle =new ofxUIToggle("free second hole",false, stdsz,stdsz,hx,at);
-    mHoleGUI->addWidget(mFreeSlaveHoleToggle);*/
+    at += stdsz*1.5;
+    mFreeHolesToggle =new ofxUIToggle("free hole(s)",false, stdsz,stdsz,hx,at);
+    mHoleGUI->addWidget(mFreeHolesToggle);
     at += stdsz*2;
     mHolePosSlider = new ofxUISlider("hole position", 0.001, 0.999, 0.501,200,stdsz/4.0,hx-200+stdsz,at);
     mHoleGUI->addWidget(mHolePosSlider);
@@ -136,7 +136,7 @@ void blobApp::draw(){
     if (ofGetFrameNum() == 0) {
         mHoleToggle->setLabelPosition(OFX_UI_WIDGET_POSITION_LEFT);
         mMirrorHolesToggle->setLabelPosition(OFX_UI_WIDGET_POSITION_LEFT);
-        //mFreeSlaveHoleToggle->setLabelPosition(OFX_UI_WIDGET_POSITION_LEFT);
+        mFreeHolesToggle->setLabelPosition(OFX_UI_WIDGET_POSITION_LEFT);
     }
     
     
@@ -250,6 +250,20 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
             } else {
                 mHoleToggle->setName("add hole");
             }
+        }
+    }
+    else if (_e.getName() == mFreeHolesToggle->getName()) {
+        if (mMasterCurve) {
+            mMasterCurve->freeHoles(mFreeHolesToggle->getValue());
+//            if (mFreeHolesToggle->getValue()) {
+//                mHoleGUI->removeWidget(mHoleOSSlider);
+//                mHoleGUI->removeWidget(mHolePosSlider);
+//                mHoleGUI->removeWidget(mHoleSizeSlider);
+//            } else {
+//                mHoleGUI->addWidget(mHoleOSSlider);
+//                mHoleGUI->addWidget(mHolePosSlider);
+//                mHoleGUI->addWidget(mHoleSizeSlider);
+//            }
         }
     }
     else if (_e.getName() == mUpdateButton->getName() && mUpdateButton->getValue()) {

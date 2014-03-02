@@ -14,7 +14,8 @@ mOS(_os),
 mT(_t),
 mEdge(_edge),
 mPath(NULL),
-mAddPath(_addpath)
+mAddPath(_addpath),
+mFreed(false)
 {
     update(_os, _r, _t);
 }
@@ -23,7 +24,17 @@ hole::~hole() {
     
 }
 
+void hole::free() {
+    mFreed = true;
+}
+
+void hole::lock() {
+    mFreed = false;
+    update(mOS, mR, mT);
+}
+
 void hole::update(float _os, float _r, float _t) {
+    if (mFreed == false) {
     mOS = _os;
     mR = _r;
     mT = _t;
@@ -37,35 +48,106 @@ void hole::update(float _os, float _r, float _t) {
     mEdgeNormal = pln.getNormalAtIndex(pln.getIndexAtPercent(sc_t)).rescale(-1);
     
     mVerts.clear();
-    
+        ofPoint cen =mEdgePt+mEdgeNormal*(mOS+mR);
+        float segs = 6.0;
+        int ind = 0;
+        for( float theta = 0; theta < TWO_PI+1*TWO_PI/segs; theta += TWO_PI/segs)
+        {
+            mVerts.push_back(new draggableVertex(ofPoint(mR * cos(theta)+cen.x, mR * sin(theta)+cen.y,0),ind));
+            ind++;
+        }
+    }
 }
 
 void hole::draw() {
-    /*ofSetColor(255, 0, 0);
-    ofSetLineWidth(4);
-    ofLine(mEdgePt, mEdgePt+mEdgeNormal*mOS);
-    ofCircle(mEdgePt+mEdgeNormal*(mOS+mR), mR);*/
+   if (mFreed) {
+            ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
+            ofEnableSmoothing();
+            ofSetLineWidth(1.25);
+            
+            ofNoFill();
+            ofSetColor(255,0,128);
+            ofBeginShape();
+            for (auto v : mVerts){
+                ofVertex(v->pos.x, v->pos.y);
+            }
+            ofEndShape();
+            
+            
+            ofSetColor(255,0,128);
+            for (auto v : mVerts){
+                ofFill();
+                if (v->bOver == true) {
+                    ofCircle(v->pos.x, v->pos.y,12);
+                } else {
+                    ofCircle(v->pos.x, v->pos.y,8);
+                }
+            }
+            
+            ofDisableBlendMode();
+        
+
+  }
 }
 
 void hole::addToPath(ofPath *_path) {
-    if (mVerts.size() == 0) {
-        //mAddPath->circle(mEdgePt+mEdgeNormal*(mOS+mR), mR);
-        ofPoint cen =mEdgePt+mEdgeNormal*(mOS+mR);
-        float segs = 6.0;
-        vector<ofPoint> pts;
         
-        for( float theta = 0; theta < TWO_PI+1*TWO_PI/segs; theta += TWO_PI/segs)
-        {
-            pts.push_back(ofPoint(mR * cos(theta)+cen.x, mR * sin(theta)+cen.y));
-        }
         
-        for (int i=0; i<pts.size()-2;i++) {
-            if (i==0) _path->moveTo((pts[i]+pts[i+1])*0.5);
-            _path->bezierTo((pts[i]+pts[i+1])*0.5, pts[i+1], (pts[i+1]+pts[i+2])*0.5);
+        for (int i=0; i<mVerts.size()-2;i++) {
+            if (i==0) _path->moveTo((mVerts[i]->pos+mVerts[i+1]->pos)*0.5);
+            _path->bezierTo((mVerts[i]->pos+mVerts[i+1]->pos)*0.5, mVerts[i+1]->pos, (mVerts[i+1]->pos+mVerts[i+2]->pos)*0.5);
             
         }
         
         
         _path->close();
+    
+}
+
+void hole::mouseMoved(int _x, int _y ){
+    if (mFreed == true) {
+        for (auto v : mVerts){
+            float diffx = _x - v->pos.x;
+            float diffy = _y - v->pos.y;
+            float dist = sqrt(diffx*diffx + diffy*diffy);
+            if (dist < v->radius){
+                v->bOver = true;
+                printf("over hole vertex %i\n",v->ind);
+            } else {
+                v->bOver = false;
+            }
+        }
     }
+}
+
+void hole::mouseDragged(int _x, int _y, int button){
+    if (mFreed == true) {
+        for (auto v : mVerts){
+            if (v->bBeingDragged == true){
+                v->pos.x = _x;
+                v->pos.y = _y;
+            }
+        }
+    }
+}
+
+void hole::mousePressed(int _x, int _y, int _button){
+    if (mFreed == true) {
+        for (auto v : mVerts){
+            float diffx = _x - v->pos.x;
+            float diffy = _y - v->pos.y;
+            float dist = sqrt(diffx*diffx + diffy*diffy);
+            if (dist < v->radius){
+                v->bBeingDragged = true;
+            } else {
+                v->bBeingDragged = false;
+            }
+        }
+    }
+}
+
+void hole::mouseReleased(int _x, int _y, int _button){
+	for (auto v : mVerts){
+		v->bBeingDragged = false;
+	}
 }

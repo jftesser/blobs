@@ -39,7 +39,7 @@ private:
     ofxUICanvas *mHoleGUI;
     ofxUIToggle *mHoleToggle;
     ofxUIToggle *mMirrorHolesToggle;
-    //ofxUIToggle *mFreeSlaveHoleToggle;
+    ofxUIToggle *mFreeHolesToggle;
     ofxUISlider *mHoleSizeSlider;
     ofxUISlider *mHoleOSSlider;
     ofxUISlider *mHolePosSlider;

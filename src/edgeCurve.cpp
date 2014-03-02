@@ -278,6 +278,9 @@ void edgeCurve::draw() {
     }
     
     
+    if (mHole) mHole->draw();
+    if (mSlaveHole) mSlaveHole->draw();
+    
     ofFill();
     ofSetColor(255);
     if (mDrawZipper) {
@@ -285,6 +288,8 @@ void edgeCurve::draw() {
         mZipperPath->draw();
         ofDisableBlendMode();
     }
+    
+    
 }
 void edgeCurve::calcZipper() {
     mZipperPts.clear();
@@ -386,6 +391,7 @@ void edgeCurve::calcZipper() {
         }
     }
     
+    
 }
 
 ofPoint edgeCurve::checkOver(ofPoint _pt, float _min_os) {
@@ -420,6 +426,16 @@ ofPoint edgeCurve::checkOver(ofPoint _pt, float _min_os) {
     return _pt;
 }
 
+void edgeCurve::freeHoles(bool _free) {
+    if (_free) {
+        if (mHole) mHole->free();
+        if (mSlaveHole) mSlaveHole->free();
+    } else {
+        if (mHole) mHole->lock();
+        if (mSlaveHole) mSlaveHole->lock();
+    }
+}
+
 void edgeCurve::mouseMoved(int _x, int _y ){
     if (mLocked == false) {
         for (auto v : mVerts){
@@ -433,10 +449,12 @@ void edgeCurve::mouseMoved(int _x, int _y ){
                 v->bOver = false;
             }
         }
+        if (mHole) mHole->mouseMoved(_x, _y);
+        if (mSlaveHole) mSlaveHole->mouseMoved(_x, _y);
     }
 }
 
-void edgeCurve::mouseDragged(int _x, int _y, int button){
+void edgeCurve::mouseDragged(int _x, int _y, int _button){
     if (mLocked == false) {
         for (auto v : mVerts){
             if (v->bBeingDragged == true){
@@ -445,6 +463,8 @@ void edgeCurve::mouseDragged(int _x, int _y, int button){
                 return; // only ever move one vertex
             }
         }
+        if (mHole) mHole->mouseDragged(_x, _y, _button);
+        if (mSlaveHole) mSlaveHole->mouseDragged(_x, _y, _button);
     }
 }
 
@@ -460,6 +480,8 @@ void edgeCurve::mousePressed(int _x, int _y, int _button){
                 v->bBeingDragged = false;
             }
         }
+        if (mHole) mHole->mousePressed(_x, _y, _button);
+        if (mSlaveHole) mSlaveHole->mousePressed(_x, _y, _button);
     }
 }
 
@@ -467,6 +489,8 @@ void edgeCurve::mouseReleased(int _x, int _y, int _button){
 	for (auto v : mVerts){
 		v->bBeingDragged = false;
 	}
+    if (mHole) mHole->mouseReleased(_x, _y, _button);
+    if (mSlaveHole) mSlaveHole->mouseReleased(_x, _y, _button);
     if (mIsSlave == false) recenter();
 }
 

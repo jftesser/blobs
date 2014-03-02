@@ -65,6 +65,7 @@ public:
     // setters
     void setMaster(edgeCurve *_mc) {mMasterCurve = _mc;};
     void showZipper(bool _show) {mDrawZipper = _show;};
+    void freeHoles(bool _free);
     
 private:
     vector <ofVec3f> calcSlaveVerts();

@@ -22,6 +22,14 @@ public:
     void draw();
     void addToPath(ofPath *_path);
     void update(float _os, float _r, float _t);
+    void free();
+    void lock();
+    
+    // call these from edge curve
+    void mouseMoved(int _x, int _y );
+    void mouseDragged(int _x, int _y, int _button);
+    void mousePressed(int _x, int _y, int _button);
+    void mouseReleased(int _x, int _y, int _button);
 private:
     vector <draggableVertex *> mVerts;
     ofPath *mPath;
@@ -32,6 +40,7 @@ private:
     float mR;
     ofPoint mEdgePt;
     ofVec3f mEdgeNormal;
+    bool mFreed;
 };
 
 #endif /* defined(__blobs__hole__) */
