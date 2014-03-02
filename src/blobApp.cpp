@@ -161,7 +161,8 @@ void blobApp::draw(){
     }
     
     if (mSaveFrame) {
-    ofSaveScreen("blob-screencap-"+ofGetTimestampString()+".jpg");
+        ofSaveScreen("blob-screencap-"+ofGetTimestampString()+".jpg");
+        mSaveFrame = false;
     }
 }
 
