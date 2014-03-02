@@ -5,6 +5,7 @@
 
 //--------------------------------------------------------------
 void blobApp::setup(){
+    mSaveFrame = false;
     ofBackground(255,255,255);
 	ofSetFrameRate(60);
     ofEnableSmoothing();
@@ -159,6 +160,9 @@ void blobApp::draw(){
     font.drawString("tap the 'z' key to zip the from up and 'x' to unzip.\n\n'c' releases the corners", ofGetHeight()+40,40);
     }
     
+    if (mSaveFrame) {
+    ofSaveScreen("blob-screencap-"+ofGetTimestampString()+".jpg");
+    }
 }
 
 //--------------------------------------------------------------
@@ -168,6 +172,8 @@ void blobApp::keyPressed(int _key){
     if (_key == 'x') mForm->unzipLast();
     
     if (_key == 'c') mForm->releaseCorners();
+    
+    if (_key == 's') mSaveFrame = true;
 }
 
 //--------------------------------------------------------------
@@ -238,6 +244,9 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
             if (mHoleToggle->getValue()) {
                 mMasterCurve->addHole(mHolePosSlider->getScaledValue(), mHoleOSSlider->getScaledValue(), mHoleSizeSlider->getScaledValue(), mMirrorHolesToggle->getValue());
             }
+            
+            mMasterCurve->freeHoles(false);
+            mFreeHolesToggle->setValue(false);
         }
     }
     else if (_e.getName() == mMirrorHolesToggle->getName()) {
@@ -249,6 +258,11 @@ void blobApp::guiEvent(ofxUIEventArgs &_e)
                 mMasterCurve->addHole(mHolePosSlider->getScaledValue(), mHoleOSSlider->getScaledValue(), mHoleSizeSlider->getScaledValue(), mMirrorHolesToggle->getValue());
             } else {
                 mHoleToggle->setName("add hole");
+            }
+            
+            if (mMirrorHolesToggle->getValue()) {
+                mMasterCurve->freeHoles(false);
+                mFreeHolesToggle->setValue(false);
             }
         }
     }

@@ -97,8 +97,8 @@ void form::draw() {
     
     ofSetColor(255, 0, 128);
     ofMaterial meshmat;
-    meshmat.setColors(ofColor(255,0,125), ofColor(255,0,125), ofColor(255,255,255), ofColor(0,0,0));
-    meshmat.setShininess(1.0);
+    meshmat.setColors(ofColor(255,0,128), ofColor(255,0,128), ofColor(100,0,60), ofColor(0,0,0));
+    meshmat.setShininess(0.5);
     meshmat.begin();
     mMesh.ofMesh::draw(OF_MESH_FILL);
     mOuterMesh.ofMesh::draw(OF_MESH_FILL);

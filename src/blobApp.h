@@ -55,4 +55,7 @@ private:
     // bg
     ofFbo m2DFbo;
     float mBorder;
+    
+    // util
+    bool mSaveFrame;
 };
